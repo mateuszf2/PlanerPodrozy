@@ -16,7 +16,7 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent=".40" />
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         style="@style/custom_card_view_style"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -44,17 +44,17 @@
                     android:text="Don't have an account?" />
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/tv_sign_up"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="Sign up"
+                    android:text=" Sign up"
                     android:textColor="@color/app_theme"
                     android:textStyle="bold" />
             </LinearLayout>
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btn_sign_in"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="16dp"
@@ -65,10 +65,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+                app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tv_forgot_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -77,14 +77,14 @@
                 android:textColor="@color/app_theme"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+                app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
             <EditText
-                android:id="@+id/editTextTextPassword"
+                android:id="@+id/et_password"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="32dp"
-                android:background="@color/edit_text_background"
+                android:background="@drawable/edit_text_background"
                 android:drawableLeft="@drawable/baseline_lock_24"
                 android:drawablePadding="6dp"
                 android:drawableTint="@color/app_theme"
@@ -94,50 +94,53 @@
                 android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextName" />
+                app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
             <EditText
-                android:id="@+id/editTextTextName"
+                android:id="@+id/et_email"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:background="@color/edit_text_background"
-                android:drawableLeft="@drawable/mail"
+                android:background="@drawable/edit_text_background"
+                android:drawableLeft="@drawable/baseline_email_24"
                 android:drawablePadding="6dp"
                 android:drawableTint="@color/app_theme"
                 android:ems="10"
-                android:hint="Email or Username"
+                android:hint="Email "
                 android:inputType="text"
                 android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/fab_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="24dp"
         android:background="@color/white"
         android:clickable="true"
         app:backgroundTint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_arrow_back_ios_new_24"
-        app:tint="@color/app_theme"
-        tools:layout_editor_absoluteY="24dp" />
+        app:tint="@color/app_theme" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:fontFamily="sans-serif-medium"
         android:text="Welcome\nTraveller"
         android:textColor="#FFFDFD"
         android:textSize="36dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton"
-        tools:layout_editor_absoluteX="12dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fab_back" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
