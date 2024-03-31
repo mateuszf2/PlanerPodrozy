@@ -1,0 +1,105 @@
+{
+  "project_info": {
+    "project_number": "979976665017",
+    "project_id": "my-application-cb8be",
+    "storage_bucket": "my-application-cb8be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979976665017:android:01c61ff3f5192ddcd1e868",
+        "android_client_info": {
+          "package_name": "com.example.logowanie"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjWUfgWf1QwY_JJjtlk_W0NtcfacB0Cf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979976665017:android:44a6305e541d99c0d1e868",
+        "android_client_info": {
+          "package_name": "com.example.logowanierejestracja"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjWUfgWf1QwY_JJjtlk_W0NtcfacB0Cf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979976665017:android:7948a6acb2478105d1e868",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjWUfgWf1QwY_JJjtlk_W0NtcfacB0Cf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979976665017:android:cb439d592ea494e1d1e868",
+        "android_client_info": {
+          "package_name": "com.example.planerpodrozy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjWUfgWf1QwY_JJjtlk_W0NtcfacB0Cf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979976665017:android:3291ad9dd085b51bd1e868",
+        "android_client_info": {
+          "package_name": "com.example.test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjWUfgWf1QwY_JJjtlk_W0NtcfacB0Cf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
