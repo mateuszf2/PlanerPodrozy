@@ -3,6 +3,7 @@ package com.example.planerpodrozy
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -55,6 +56,10 @@ class MainActivity : AppCompatActivity() {
         binding.buttonCreateEvent.setOnClickListener{
             val intent = Intent(this, CreateEventActivity::class.java)
             Log.i("TAG", "PRZYCISK")
+            startActivity(intent)
+        }
+        binding.ibViewProfile.setOnClickListener{
+            val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
     }
