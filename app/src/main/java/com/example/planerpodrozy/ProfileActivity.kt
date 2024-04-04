@@ -2,6 +2,7 @@ package com.example.planerpodrozy
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.planerpodrozy.databinding.ActivityProfileBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -45,8 +46,9 @@ class ProfileActivity: AppCompatActivity() {
                 // FirebaseUser.getIdToken() instead.
                 val uid = it.uid
                 val email = user.email
-                Log.i("TAG","aaaaaaaaaaaaaaaaaaaa$email")
-                //val mTextView = findViewById<View>(R.id.tv_email) as TextView
+                val mTextView = findViewById<TextView>(R.id.tv_email) as TextView
+                mTextView.text=email
+                setContentView(binding.root)
             }
 
         }
