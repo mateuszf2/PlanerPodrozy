@@ -29,12 +29,14 @@
             android:exported="false"/>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"/>
         <activity
             android:name=".ProfileActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".EventActivity"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>

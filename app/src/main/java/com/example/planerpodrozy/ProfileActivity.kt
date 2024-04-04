@@ -1,5 +1,6 @@
 package com.example.planerpodrozy
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
@@ -51,6 +52,10 @@ class ProfileActivity: AppCompatActivity() {
                 setContentView(binding.root)
             }
 
+        }
+        binding.buttonBack.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 

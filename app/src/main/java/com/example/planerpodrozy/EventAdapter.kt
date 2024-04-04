@@ -9,6 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 
 class EventAdapter : ListAdapter<Event, EventAdapter.EventViewHolder>(EventDiffCallback()) {
 
+    private var onEventClickListener: OnEventClickListener? = null
+
+    fun setOnEventClickListener(listener: OnEventClickListener) {
+        onEventClickListener = listener
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_event, parent, false)
         return EventViewHolder(itemView)
@@ -17,6 +22,11 @@ class EventAdapter : ListAdapter<Event, EventAdapter.EventViewHolder>(EventDiffC
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val currentEvent = getItem(position)
         holder.bind(currentEvent)
+
+        holder.itemView.setOnClickListener {
+            val event = getItem(holder.adapterPosition)
+            onEventClickListener?.onEventClick(event)
+        }
     }
 
     inner class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,5 +45,9 @@ class EventAdapter : ListAdapter<Event, EventAdapter.EventViewHolder>(EventDiffC
         override fun areContentsTheSame(oldItem: Event, newItem: Event): Boolean {
             return oldItem == newItem
         }
+    }
+
+    interface OnEventClickListener{
+        fun onEventClick(event: Event)
     }
 }
