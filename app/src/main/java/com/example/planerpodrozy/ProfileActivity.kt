@@ -20,7 +20,6 @@ import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
 import java.lang.ref.PhantomReference
 
-
 class ProfileActivity: AppCompatActivity() {
     private lateinit var binding:ActivityProfileBinding
     private lateinit var firebaseAuth: FirebaseAuth
@@ -30,12 +29,14 @@ class ProfileActivity: AppCompatActivity() {
     private lateinit var profileAdd : ImageView
     private lateinit var userid : String
     private lateinit var image : ByteArray
+    private lateinit var db : DocumentReference
     private lateinit var storageReference : StorageReference
-    val register = registerForActivityResult(ActivityResultContracts.TakePicturePreview()){
+
+    private val register = registerForActivityResult(ActivityResultContracts.TakePicturePreview()){
         uploadImage(it)
     }
-    val db=Firebase.firestore
-    val eventsCollectionRef= db.collection("zdjecieProfilowe")
+    private val db2=Firebase.firestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAuth = FirebaseAuth.getInstance()
@@ -44,7 +45,8 @@ class ProfileActivity: AppCompatActivity() {
         binding= ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
         userid = firebaseAuth.currentUser!!.uid
-        storageReference = FirebaseStorage.getInstance().reference.child("$userid/profilePhoto")
+        storageReference = FirebaseStorage.getInstance().reference.child("$userid/zdjecieLink")
+        db=fstore.collection("zdjecieProfilowe").document(userid)
 
         if(firebaseAuth.currentUser != null){
             val user = firebaseAuth.currentUser
@@ -69,39 +71,36 @@ class ProfileActivity: AppCompatActivity() {
         profileImage = findViewById(R.id.profile_image)
         profileAdd = findViewById(R.id.profile_add)
 
-        lateinit var photoLink : String
-        db.collection("zdjecieProfilowe")
+        db2.collection("zdjecieProfilowe")
             .whereEqualTo("userId", userid)
-            .get()
-            .addOnSuccessListener{ documents ->
-                for (document in documents){
-                    photoLink = document.getString("zdjecieLink")!!
+            //.get()
+            .addSnapshotListener{ value, error ->
+                if (error != null) {
+                    Log.i("TAG", "Listen failed.", error)
+                    return@addSnapshotListener
+                }
+                Log.i("TAG", "${value?.metadata}")
+                Log.i("TAG", "${value?.documents}")
+                Log.i("TAG", "${value?.query}")
+                for (document in value!!){
+                    Log.i("TAG","${document.getString("zdjecieLink")}")
+                    Picasso.get().load(document.getString("zdjecieLink")).error(R.drawable.user).into(profileImage)
                 }
                 Picasso.get().setLoggingEnabled(true)
-                Picasso.get().load(photoLink).error(R.drawable.user).into(profileImage)
             }
-//            .addSnapshotListener{ value, error ->
-//            Log.i("TAG","AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-//
-//            Picasso.get().setLoggingEnabled(true)
-//            Picasso.get().load(value.query.get("zdjecieLink")).error(R.drawable.user).into(profileImage)
-//          }
-
 
         binding.buttonBack.setOnClickListener{
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-        profileAdd.setOnClickListener(){
+        profileAdd.setOnClickListener{
             capturePhoto()
         }
-
     }
 
     private fun capturePhoto() {
         register.launch(null)
     }
-
     private fun uploadImage(it: Bitmap?) {
         val baos = ByteArrayOutputStream()
         it?.compress(Bitmap.CompressFormat.JPEG, 50, baos)
@@ -111,7 +110,10 @@ class ProfileActivity: AppCompatActivity() {
                 val obj = mutableMapOf<String,String>()
                 obj["zdjecieLink"] = it.toString()
                 obj["userId"] = userid
-                eventsCollectionRef.add(obj)
+                db.update(obj as Map<String,String>).addOnSuccessListener {
+                    Log.d("onSuccess","ProfilePictureUploaded")
+                }
+                db.set(obj)
             }
         }
     }
