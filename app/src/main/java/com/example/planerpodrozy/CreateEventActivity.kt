@@ -16,6 +16,7 @@ class CreateEventActivity:AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val db= Firebase.firestore
         val eventsCollectionRef= db.collection("wydarzenia")
+        val eventsUsersCollectionRef= db.collection("wydarzeniaUzytkownicy")
         val currentUser= FirebaseAuth.getInstance().currentUser
         val userId= currentUser?.uid
 
@@ -31,12 +32,17 @@ class CreateEventActivity:AppCompatActivity() {
             if(userId!=null && binding.eventNameText.text.toString()!=""){
                 val eventName= binding.eventNameText.text.toString()
                 val eventData= hashMapOf(
-                    "nazwa_wydarzenia" to eventName,
-                    "userId" to userId
+                    "nazwa_wydarzenia" to eventName
                 )
                 eventsCollectionRef.add(eventData)
                     .addOnSuccessListener {documentReference->
-
+                        val eventsUsersData= hashMapOf(
+                        "eventId" to documentReference.id,
+                        "userId" to userId
+                        )
+                        eventsUsersCollectionRef.add(eventsUsersData)
+                            .addOnSuccessListener {}
+                            .addOnFailureListener{}
                     }
                     .addOnFailureListener { e ->
                     }

@@ -37,19 +37,37 @@ class MainActivity : AppCompatActivity(), EventAdapter.OnEventClickListener {
             if(userId!=null){
                 val db= Firebase.firestore
 
-                db.collection("wydarzenia")
+                db.collection("wydarzeniaUzytkownicy")
                     .whereEqualTo("userId", userId)
                     .get()
                     .addOnSuccessListener { documents->
                         val eventsList = mutableListOf<Event>()
+                        val list = mutableListOf<String>()
                         for(document in documents)
                         {
-                            val eventId = document.id
-                            val nazwaWydarzenia= document.getString("nazwa_wydarzenia")
-                            eventsList.add(Event(eventId, nazwaWydarzenia))
-                            Log.i("TAG", "Nazwa wydarzenia $nazwaWydarzenia, o id $eventId")
+                            val eventId = document.getString("eventId") // Pobieramy identyfikator wydarzenia z dokumentu "wydarzeniaUzytkownicy"
+                            if(eventId != null) {
+                                list.add(eventId)
+                            }
                         }
-                        eventAdapter.submitList(eventsList)
+                        for(eventIDD in list){
+                            db.collection("wydarzenia")
+                                .document(eventIDD)
+                                .get()
+                                .addOnSuccessListener { eventDocument ->
+                                    val nazwaWydarzenia= eventDocument.getString("nazwa_wydarzenia")
+                                    val eventId= eventIDD
+                                    val evento= Event(eventId, nazwaWydarzenia)
+                                    Log.i("TAG", "$evento")
+                                    eventsList.add(evento)
+                                    Log.i("TAG", "Nazwa wydarzenia $nazwaWydarzenia, o id $eventIDD")
+                                    Log.i("TAG", eventsList.toString())
+                                    eventAdapter.submitList(eventsList)
+
+                                }
+                                .addOnFailureListener{ e-> }
+                        }
+
                     }
                     .addOnFailureListener{ e->
 
@@ -67,6 +85,11 @@ class MainActivity : AppCompatActivity(), EventAdapter.OnEventClickListener {
         //profil- przycisk
         binding.ibViewProfile.setOnClickListener{
             val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+        //zaproszenia- przycisk
+        binding.buttonInvitations.setOnClickListener{
+            val intent = Intent(this, InvitationsActivity::class.java)
             startActivity(intent)
         }
 

@@ -19,6 +19,8 @@ class EventActivity:AppCompatActivity() {
         val eventsCollectionRef= db.collection("wydarzenia")
         val currentUser = FirebaseAuth.getInstance().currentUser
         val userId = currentUser?.uid
+        //odczytanie id wydarzenia z intentu(id_wydarzenia czyli id dokumentu wydarzenia z firebase)
+        val eventId = intent.getStringExtra("eventId")
 
         binding = ActivityEventBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -28,11 +30,15 @@ class EventActivity:AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.buttonAddFriend.setOnClickListener{
+            val intent= Intent(this, InviteToEventActivity::class.java)
+            intent.putExtra("eventId", eventId)
+            startActivity(intent)
+        }
+
         if(userId!=null){
             //pobranie intentu, która uruchomił aktywność
             val intent = intent
-            //odczytanie id wydarzenia z intentu(id_wydarzenia czyli id dokumentu wydarzenia z firebase)
-            val eventId = intent.getStringExtra("eventId")
 
             if(eventId!=null){
                 eventsCollectionRef.document(eventId)
