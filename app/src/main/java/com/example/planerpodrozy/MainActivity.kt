@@ -8,9 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planerpodrozy.databinding.ActivityMainBinding
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.firestore
+import org.w3c.dom.Document
 
 class MainActivity : AppCompatActivity(), EventAdapter.OnEventClickListener {
     private lateinit var binding: ActivityMainBinding;
@@ -42,32 +46,29 @@ class MainActivity : AppCompatActivity(), EventAdapter.OnEventClickListener {
                     .get()
                     .addOnSuccessListener { documents->
                         val eventsList = mutableListOf<Event>()
-                        val list = mutableListOf<String>()
+                        val tasks = mutableListOf<Task<DocumentSnapshot>>()
+
                         for(document in documents)
                         {
                             val eventId = document.getString("eventId") // Pobieramy identyfikator wydarzenia z dokumentu "wydarzeniaUzytkownicy"
                             if(eventId != null) {
-                                list.add(eventId)
+                                val task = db.collection("wydarzenia").document(eventId).get()
+                                tasks.add(task)
                             }
                         }
-                        for(eventIDD in list){
-                            db.collection("wydarzenia")
-                                .document(eventIDD)
-                                .get()
-                                .addOnSuccessListener { eventDocument ->
-                                    val nazwaWydarzenia= eventDocument.getString("nazwa_wydarzenia")
-                                    val eventId= eventIDD
-                                    val evento= Event(eventId, nazwaWydarzenia)
-                                    Log.i("TAG", "$evento")
-                                    eventsList.add(evento)
-                                    Log.i("TAG", "Nazwa wydarzenia $nazwaWydarzenia, o id $eventIDD")
-                                    Log.i("TAG", eventsList.toString())
-                                    eventAdapter.submitList(eventsList)
-
+                        //Czeka aż wszystkie taski się zakończą
+                        Tasks.whenAllSuccess<DocumentSnapshot>(tasks)
+                            .addOnSuccessListener { snapshots ->
+                                for(snapshot in snapshots) {
+                                    val nazwaWydarzenia = snapshot.getString("nazwa_wydarzenia")
+                                    val currentEvent = Event(snapshot.id, nazwaWydarzenia)
+                                    eventsList.add(currentEvent)
                                 }
-                                .addOnFailureListener{ e-> }
-                        }
+                                eventAdapter.submitList(eventsList)
+                            }
+                            .addOnFailureListener { e ->
 
+                            }
                     }
                     .addOnFailureListener{ e->
 
