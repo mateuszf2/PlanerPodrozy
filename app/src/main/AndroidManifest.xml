@@ -26,10 +26,10 @@
             android:exported="false" />
         <activity
             android:name=".CreateEventActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".ProfileActivity"
             android:exported="false" />
@@ -41,8 +41,14 @@
             android:exported="false" />
         <activity
             android:name=".EventActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
+        <activity
+            android:name=".FriendsListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FriendsInvitationsActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

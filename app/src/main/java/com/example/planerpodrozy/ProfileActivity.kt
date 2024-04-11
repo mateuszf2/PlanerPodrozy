@@ -96,6 +96,11 @@ class ProfileActivity: AppCompatActivity() {
         profileAdd.setOnClickListener{
             capturePhoto()
         }
+        binding.btFriendsList.setOnClickListener{
+            val intent = Intent(this, FriendsListActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun capturePhoto() {
