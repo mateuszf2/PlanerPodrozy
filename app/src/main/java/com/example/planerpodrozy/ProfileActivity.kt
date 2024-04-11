@@ -45,7 +45,7 @@ class ProfileActivity: AppCompatActivity() {
         binding= ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
         userid = firebaseAuth.currentUser!!.uid
-        storageReference = FirebaseStorage.getInstance().reference.child("$userid/zdjecieLink")
+        storageReference = FirebaseStorage.getInstance().reference.child("zdjeciaProfilowe/$userid/zdjecieLink")
         db=fstore.collection("zdjecieProfilowe").document(userid)
 
         if(firebaseAuth.currentUser != null){

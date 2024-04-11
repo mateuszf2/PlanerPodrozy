@@ -48,6 +48,9 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation ("com.squareup.picasso:picasso:2.8")
     implementation ("com.google.firebase:firebase-appcheck-safetynet:16.0.0")
+    implementation ("androidx.appcompat:appcompat:1.3.0-beta01")
+
+    implementation ("androidx.cardview:cardview:1.0.0")
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
