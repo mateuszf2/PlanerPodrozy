@@ -48,6 +48,10 @@
         <activity
             android:name=".FriendsInvitationsActivity"
             android:exported="false" />
+        <activity
+            android:name=".CreateFriendActivity"
+            android:exported="false" />
+
 
     </application>
 
