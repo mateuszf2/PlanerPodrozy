@@ -49,17 +49,14 @@ class FriendsListActivity: AppCompatActivity(),FriendsAdapter.OnEventClickListen
                 db.collection("znajomi")
                     .where(Filter.or(Filter.equalTo("userId",userId),
                                      Filter.equalTo("friendEmail",email)))
-                    //.whereEqualTo("userId", userId)
                     .get()
                     .addOnSuccessListener { documents->
                         for (document in documents){
-//                            val friend = document.getString("userId")
-//                                ?.let { Friend(it,document.getString("friendEmail")) }
                             val friend = document.getString("userId")?.let {
                                 Friend(
                                     it,
-                                    document.getString("userEmail")!!,
-                                    document.getString("friendEmail"))
+                                    document.get("userEmail").toString(),
+                                    document.get("friendEmail").toString())
                             }
                             if (friend != null) {
                                 friendsList.add(friend)

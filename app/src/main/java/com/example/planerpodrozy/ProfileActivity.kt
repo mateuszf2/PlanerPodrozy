@@ -28,6 +28,7 @@ class ProfileActivity: AppCompatActivity() {
     private lateinit var profileImage : ImageView
     private lateinit var profileAdd : ImageView
     private lateinit var userid : String
+    private lateinit var userEmail : String
     private lateinit var image : ByteArray
     private lateinit var db : DocumentReference
     private lateinit var storageReference : StorageReference
@@ -45,8 +46,9 @@ class ProfileActivity: AppCompatActivity() {
         binding= ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
         userid = firebaseAuth.currentUser!!.uid
-        storageReference = FirebaseStorage.getInstance().reference.child("zdjeciaProfilowe/$userid/zdjecieLink")
-        db=fstore.collection("zdjecieProfilowe").document(userid)
+        userEmail = firebaseAuth.currentUser?.email.toString()
+        storageReference = FirebaseStorage.getInstance().reference.child("zdjeciaProfilowe/$userEmail/zdjecieLink")
+        db=fstore.collection("zdjecieProfilowe").document(userEmail)
 
         if(firebaseAuth.currentUser != null){
             val user = firebaseAuth.currentUser
@@ -72,7 +74,7 @@ class ProfileActivity: AppCompatActivity() {
         profileAdd = findViewById(R.id.profile_add)
 
         db2.collection("zdjecieProfilowe")
-            .whereEqualTo("userId", userid)
+            .whereEqualTo("userEmail", userEmail)
             //.get()
             .addSnapshotListener{ value, error ->
                 if (error != null) {
@@ -114,7 +116,7 @@ class ProfileActivity: AppCompatActivity() {
             storageReference.downloadUrl.addOnSuccessListener {
                 val obj = mutableMapOf<String,String>()
                 obj["zdjecieLink"] = it.toString()
-                obj["userId"] = userid
+                obj["userEmail"] = userEmail
                 db.update(obj as Map<String,String>).addOnSuccessListener {
                     Log.d("onSuccess","ProfilePictureUploaded")
                 }

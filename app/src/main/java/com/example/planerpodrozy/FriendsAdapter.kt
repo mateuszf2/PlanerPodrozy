@@ -3,15 +3,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Filter
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
 
 class FriendsAdapter : ListAdapter<Friend, FriendsAdapter.FriendViewHolder>(FriendDiffCallback()) {
 
     private var onEventClickListener: OnEventClickListener? = null
+
+    private val db= Firebase.firestore
+
 
     fun setOnEventClickListener(listener: OnEventClickListener) {
         onEventClickListener = listener
@@ -33,16 +41,32 @@ class FriendsAdapter : ListAdapter<Friend, FriendsAdapter.FriendViewHolder>(Frie
 
     inner class FriendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val friendNameTextView: TextView = itemView.findViewById(R.id.textView_friendName)
+        private val profilePhotoImageView: ImageView = itemView.findViewById(R.id.iv_profile_photo)
+
+
 
         fun bind(friend: Friend) {
             val currentUser= FirebaseAuth.getInstance().currentUser
-            if (currentUser?.uid == friend.userId){
-                friendNameTextView.text = friend.friendEmail
-            }
-            else{
-                friendNameTextView.text = friend.userEmail
-            }
-
+            db.collection("zdjecieProfilowe")
+                .where(
+                    Filter.or(
+                        Filter.equalTo("userEmail",friend.userEmail),
+                        Filter.equalTo("userEmail",friend.friendEmail)))
+                .addSnapshotListener { value, error ->
+                    if (value != null) {
+                        for (document in value){
+                            if (document.getString("userEmail")!=currentUser?.email){
+                                Picasso.get().load(document.getString("zdjecieLink")).error(R.drawable.user).into(profilePhotoImageView)
+                            }
+                        }
+                    }
+                }
+                if (friend.userEmail==currentUser?.email){
+                    friendNameTextView.text = friend.friendEmail
+                }
+                else {
+                    friendNameTextView.text = friend.userEmail
+                }
         }
     }
 

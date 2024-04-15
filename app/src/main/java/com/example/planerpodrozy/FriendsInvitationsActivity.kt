@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.firestore
 
 
@@ -90,7 +91,10 @@ class FriendsInvitationsActivity : AppCompatActivity(),
                 .add(znajomy)
                 .addOnSuccessListener { documentReference ->
                     db.collection("zaproszeniaZnajomi")
-                        .whereEqualTo("friendEmail", friend.friendEmail)
+                        .where(
+                            Filter.and(
+                                Filter.equalTo("userEmail",friend.userEmail),
+                            Filter.equalTo("friendEmail",friend.friendEmail)))
                         .get()
                         .addOnSuccessListener { documents ->
                             for(invitationDocument in documents) {
