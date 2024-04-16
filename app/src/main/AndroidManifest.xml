@@ -49,6 +49,9 @@
             android:name=".FriendsInvitationsActivity"
             android:exported="false" />
         <activity
+            android:name=".MembersActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateFriendActivity"
             android:exported="false" />
 

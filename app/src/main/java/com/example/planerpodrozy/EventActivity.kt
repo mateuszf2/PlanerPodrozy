@@ -30,6 +30,7 @@ class EventActivity:AppCompatActivity() {
         binding = ActivityEventBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         binding.buttonBack.setOnClickListener{
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -47,6 +48,11 @@ class EventActivity:AppCompatActivity() {
             if(selectedOption == "Zamknij") {
                 recyclerView.visibility = View.GONE
                 binding.buttonMenuBar.visibility= View.VISIBLE
+            }
+            else if(selectedOption == "Członkowie") {
+                val intent= Intent(this, MembersActivity::class.java)
+                intent.putExtra("eventId", eventId)
+                startActivity(intent)
             }
         }
         recyclerView.adapter= adapter

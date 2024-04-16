@@ -39,7 +39,6 @@ class FriendsListActivity: AppCompatActivity(),FriendsAdapter.OnEventClickListen
         val currentUser= FirebaseAuth.getInstance().currentUser
         val userId= currentUser?.uid
 
-        //funkcja pobierająca z bazy wydarzenia i wyświetlająca kafelki z nazwami wydarzeń(generująca listę wydarzeń)
         fun generateEventList(){
             if(userId!=null){
                 val db= Firebase.firestore
