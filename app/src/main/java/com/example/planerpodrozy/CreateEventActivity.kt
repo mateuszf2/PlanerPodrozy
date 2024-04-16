@@ -29,10 +29,14 @@ class CreateEventActivity:AppCompatActivity() {
         }
 
         binding.buttonAccept.setOnClickListener{
-            if(userId!=null && binding.eventNameText.text.toString()!=""){
+            if(userId!=null && binding.eventNameText.text.toString()!="" && binding.locationText.text.toString()!="" && binding.editTextDate.text.toString()!="" ){
                 val eventName= binding.eventNameText.text.toString()
+                val location= binding.locationText.text.toString()
+                val date= binding.editTextDate.text.toString()
                 val eventData= hashMapOf(
-                    "nazwa_wydarzenia" to eventName
+                    "nazwa_wydarzenia" to eventName,
+                    "lokalizacja" to location,
+                    "data" to date
                 )
                 eventsCollectionRef.add(eventData)
                     .addOnSuccessListener {documentReference->
