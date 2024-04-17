@@ -31,34 +31,52 @@ class MembersActivity : AppCompatActivity() {
         val currentUser= FirebaseAuth.getInstance().currentUser
         val userId= currentUser?.uid
 
-
+        //generwoanie listy członków wydarzenia
         if(userId!=null) {
             val membersList= mutableListOf<Friend>()
+
             db.collection("wydarzeniaUzytkownicy")
                 .whereEqualTo("eventId", eventId)
                 .get()
                 .addOnSuccessListener { documents ->
-                    for(document in documents){
-                        val friend = document.getString("userId")?.let {
-                            Friend(
-                                it,
-                                "rafal.skolimowski127@gmail.com",
-                                "Not important"
-                            )
-                        }
-                        if(friend!=null) {
-                            membersList.add(friend)
+                    val list= mutableListOf<String>()
+                    for(documentEvent in documents){
+                        val currentUserId= documentEvent.getString("userId")
+                        if(currentUserId!=null){
+                            list.add(currentUserId)
                         }
                     }
-                    friendAdapter.submitList(membersList)
-                    friendAdapter.notifyDataSetChanged()
+                    for(currentUser in list){
+                        db.collection("idEmail")
+                            .whereEqualTo("userId", currentUser)
+                            .limit(1) //pobierze tylko jeden dokument, bo jest tylko jeden uzytkownik o konkretnym id, ale w firestore ".whereequalto" zwraca listę dokumentów
+                            .get()
+                            .addOnSuccessListener { documentsEmail ->
+                                for(documentEmail in documentsEmail)
+                                {
+                                    val friend = documentEmail.getString("userId")?.let {
+                                        Friend(
+                                            it,
+                                            documentEmail.getString("userEmail")!!,
+                                            documentEmail.getString("userEmail")!!
+                                        )
+                                    }
+                                    if(friend!=null) {
+                                        membersList.add(friend)
+                                    }
+                                    friendAdapter.submitList(membersList)
+                                    friendAdapter.notifyDataSetChanged()
+                                }
+                            }
+                            .addOnFailureListener { e -> }
+                    }
                 }
                 .addOnFailureListener { e -> }
         }
 
         val recyclerView: RecyclerView= findViewById(R.id.recycler_view_MenuBar)
         val options= arrayOf("Podstawowe informacje", "Członkowie", "Wspólne finanse", "Kalendarz", "Zamknij")
-        val adapter= MenuBarAdapter(options) { selectedOption ->
+        val menuAdapter= MenuBarAdapter(options) { selectedOption ->
             if(selectedOption == "Zamknij") {
                 recyclerView.visibility = View.GONE
                 binding.buttonMenuBar.visibility= View.VISIBLE
@@ -68,8 +86,13 @@ class MembersActivity : AppCompatActivity() {
                 intent.putExtra("eventId", eventId)
                 startActivity(intent)
             }
+            else if(selectedOption == "Wspólne finanse"){
+                val intent= Intent(this, FinanseActivity::class.java)
+                intent.putExtra("eventId", eventId)
+                startActivity(intent)
+            }
         }
-        recyclerView.adapter= adapter
+        recyclerView.adapter= menuAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         binding.buttonMenuBar.setOnClickListener{

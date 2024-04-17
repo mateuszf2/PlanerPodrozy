@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.planerpodrozy.databinding.ActivitySignUpBinding
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.firestore
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -34,8 +36,22 @@ class SignUpActivity : AppCompatActivity() {
 
                     firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
                         if (it.isSuccessful) {
-                            val intent = Intent(this, SignInActivity::class.java)
-                            startActivity(intent)
+                            firebaseAuth.signInWithEmailAndPassword(email, pass)
+                            val userId= FirebaseAuth.getInstance().currentUser?.uid
+                            if(userId!=null)
+                            {
+                                val idEmailData= hashMapOf(
+                                    "userId" to userId,
+                                    "userEmail" to email
+                                )
+                                val db= Firebase.firestore
+                                db.collection("idEmail") //TWORZENIE BAZY Z MAILAMI UZYTKOWNIKOW id-mail
+                                    .add(idEmailData)
+                                    .addOnSuccessListener {
+                                        val intent = Intent(this, SignInActivity::class.java)
+                                        startActivity(intent)
+                                    }
+                            }
                         } else {
                             Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
 

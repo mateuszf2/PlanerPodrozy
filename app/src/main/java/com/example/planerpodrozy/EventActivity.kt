@@ -54,6 +54,11 @@ class EventActivity:AppCompatActivity() {
                 intent.putExtra("eventId", eventId)
                 startActivity(intent)
             }
+            else if(selectedOption == "Wspólne finanse"){
+                val intent= Intent(this, FinanseActivity::class.java)
+                intent.putExtra("eventId", eventId)
+                startActivity(intent)
+            }
         }
         recyclerView.adapter= adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
