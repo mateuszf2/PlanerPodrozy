@@ -3,6 +3,8 @@ package com.example.planerpodrozy
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.os.Handler
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.planerpodrozy.databinding.ActivityCreateFriendBinding
 import com.google.firebase.Firebase
@@ -40,7 +42,18 @@ class CreateFriendActivity:AppCompatActivity() {
                 )
                 friendsCollectionRef.add(friendData as Map<String,String>)
             }
+            showToast("Wysłano zaproszenie do znajomych")
         }
 
+    }
+    private fun showToast(message: String) {
+        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        toast.show()
+
+
+        val czasTrwaniaToast = 1500
+        Handler().postDelayed({
+            toast.cancel()
+        }, czasTrwaniaToast.toLong())
     }
 }

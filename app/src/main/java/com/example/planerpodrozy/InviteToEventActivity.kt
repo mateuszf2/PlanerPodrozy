@@ -2,7 +2,9 @@ package com.example.planerpodrozy
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.planerpodrozy.databinding.ActivityInviteToEventBinding
 import com.google.firebase.Firebase
@@ -42,9 +44,11 @@ class InviteToEventActivity : AppCompatActivity() {
                     invitationsCollectionRef.add(invitationData)
                         .addOnSuccessListener { documentReference->
                             Log.i("TAG", "UDALO SIĘ")
+                            showToast("Wysłano zaproszenie do wyjazdu")
                         }
                         .addOnFailureListener{ e->
                             Log.i("TAG", "NIE UDALO SIĘ")
+                            showToast("Nie wysłano zaproszenia do wyjazdu")
                         }
                 }
             }
@@ -55,5 +59,16 @@ class InviteToEventActivity : AppCompatActivity() {
         val pattern = Pattern.compile(emailPattern)
         val matcher = pattern.matcher(email)
         return matcher.matches()
+    }
+
+    private fun showToast(message: String) {
+        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        toast.show()
+
+
+        val czasTrwaniaToast = 1500
+        Handler().postDelayed({
+            toast.cancel()
+        }, czasTrwaniaToast.toLong())
     }
 }

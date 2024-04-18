@@ -2,22 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@android:color/darker_gray"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black" />
 
     <TextView
         android:id="@+id/textView_eventName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="15dp"
         android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/buttonDeleteEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete" />
+        android:text="Delete"
+        android:layout_marginLeft="15dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black" />
 
 </LinearLayout>
