@@ -32,6 +32,8 @@ class FriendsInvitationsActivity : AppCompatActivity(),
             val intent = Intent(this, FriendsListActivity::class.java)
             startActivity(intent)
         }
+
+
     }
 
 

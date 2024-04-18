@@ -99,5 +99,9 @@ class MembersActivity : AppCompatActivity() {
             recyclerView.visibility= View.VISIBLE
             binding.buttonMenuBar.visibility= View.GONE
         }
+        binding.buttonBack.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

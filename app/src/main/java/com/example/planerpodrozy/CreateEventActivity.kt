@@ -2,6 +2,8 @@ package com.example.planerpodrozy
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.widget.Toast
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import com.example.planerpodrozy.databinding.ActivityCreateEventBinding
@@ -29,30 +31,40 @@ class CreateEventActivity:AppCompatActivity() {
         }
 
         binding.buttonAccept.setOnClickListener{
-            if(userId!=null && binding.eventNameText.text.toString()!="" && binding.locationText.text.toString()!="" && binding.editTextDate.text.toString()!="" ){
-                val eventName= binding.eventNameText.text.toString()
-                val location= binding.locationText.text.toString()
-                val date= binding.editTextDate.text.toString()
-                val eventData= hashMapOf(
+            if(userId!=null && binding.eventNameText.text.toString()!="" && binding.locationText.text.toString()!="" && binding.editTextDate.text.toString()!="" ) {
+                val eventName = binding.eventNameText.text.toString()
+                val location = binding.locationText.text.toString()
+                val date = binding.editTextDate.text.toString()
+                val eventData = hashMapOf(
                     "nazwa_wydarzenia" to eventName,
                     "lokalizacja" to location,
                     "data" to date
                 )
                 eventsCollectionRef.add(eventData)
-                    .addOnSuccessListener {documentReference->
-                        val eventsUsersData= hashMapOf(
-                        "eventId" to documentReference.id,
-                        "userId" to userId
+                    .addOnSuccessListener { documentReference ->
+                        val eventsUsersData = hashMapOf(
+                            "eventId" to documentReference.id,
+                            "userId" to userId
                         )
                         eventsUsersCollectionRef.add(eventsUsersData)
-                            .addOnSuccessListener {}
-                            .addOnFailureListener{}
+                            .addOnSuccessListener {showToast("Pomyślnie utworzono wydarzenie")}
+                            .addOnFailureListener {showToast("Nie udało się utworzyć wydarzenia")}
                     }
                     .addOnFailureListener { e ->
                     }
-
             }
+
         }
 
+    }
+    private fun showToast(message: String) {
+        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        toast.show()
+
+
+        val czasTrwaniaToast = 2000
+        Handler().postDelayed({
+            toast.cancel()
+        }, czasTrwaniaToast.toLong())
     }
 }
