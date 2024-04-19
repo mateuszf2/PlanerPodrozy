@@ -5,12 +5,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.planerpodrozy.databinding.ActivityFinanseBinding
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 
 class FinanseActivity : AppCompatActivity() {
     lateinit var binding: ActivityFinanseBinding
+    private lateinit var finanseRecyclerView: RecyclerView
+    private lateinit var finanseAdapter: FinanseAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +23,33 @@ class FinanseActivity : AppCompatActivity() {
 
         val eventId= intent.getStringExtra("eventId")
         val db= Firebase.firestore
+        val currentUser= FirebaseAuth.getInstance().currentUser
+        val userId= currentUser?.uid
+
+
+        finanseRecyclerView= binding.recyclerViewFinanse
+        finanseAdapter= FinanseAdapter()
+        finanseRecyclerView.adapter= finanseAdapter
+        finanseRecyclerView.layoutManager= LinearLayoutManager(this)
+
+        if(userId!=null){
+            db.collection("finanse")
+                .whereEqualTo("eventId", eventId)
+                .get()
+                .addOnSuccessListener { documents->
+                    val finanseList= mutableListOf<Finanse>()
+                    for(document in documents){
+                        val finanseName= document.getString("finanseName")
+                        val amountFinanse= document.getString("amountFinanse")
+                        val finanse= Finanse(amountFinanse!!.toDouble(), eventId.toString(), finanseName.toString())
+                        finanseList.add(finanse)
+                    }
+                    finanseAdapter.submitList(finanseList)
+                }
+                .addOnFailureListener { e->
+
+                }
+        }
 
         val menuRecyclerView= binding.recyclerViewMenuBar
         val options= arrayOf("Podstawowe informacje", "Członkowie", "Wspólne finanse", "Kalendarz", "Zamknij")
@@ -50,5 +81,13 @@ class FinanseActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
+        binding.buttonAddFinanse.setOnClickListener {
+            val intent= Intent(this, AddFinanseActivity::class.java)
+            intent.putExtra("eventId", eventId)
+            startActivity(intent)
+        }
+
+
     }
 }

@@ -55,6 +55,9 @@
             android:name=".FinanseActivity"
             android:exported="false" />
         <activity
+            android:name=".AddFinanseActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateFriendActivity"
             android:exported="false" />
 
