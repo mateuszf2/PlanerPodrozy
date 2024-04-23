@@ -52,11 +52,6 @@ class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHol
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val currentMessage = getItem(position)
         holder.bind(currentMessage)
-        holder.itemView.setOnClickListener {
-            val message = getItem(holder.adapterPosition)
-            onEventClickListener?.onEventClick(message)
-        }
-
     }
 
     inner class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -79,7 +74,6 @@ class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHol
     }
 
     interface OnEventClickListener{
-        fun onEventClick(message : MessageModel)
     }
 }
 

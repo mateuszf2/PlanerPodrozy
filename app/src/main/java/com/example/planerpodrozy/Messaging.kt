@@ -96,7 +96,9 @@ class Messaging : AppCompatActivity(),MessageAdapter.OnEventClickListener{
                         }
                     }
                     MessageAdapter.submitList(messagesList)
+                    MessageRecyclerView.scrollToPosition(documents.size()-1)
                     MessageAdapter.notifyDataSetChanged()
+
                 }
         }
         fun checkIfChatroomExist() :String{
@@ -166,8 +168,6 @@ class Messaging : AppCompatActivity(),MessageAdapter.OnEventClickListener{
 
 
     }
-    override fun onEventClick(message : MessageModel) {
 
-    }
 
 }
