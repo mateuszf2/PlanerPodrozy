@@ -12,23 +12,24 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 
 class FinanseActivity : AppCompatActivity() {
-    lateinit var binding: ActivityFinanseBinding
+    private lateinit var binding: ActivityFinanseBinding
     private lateinit var finanseRecyclerView: RecyclerView
     private lateinit var finanseAdapter: FinanseAdapter
+    private lateinit var eventId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityFinanseBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val eventId= intent.getStringExtra("eventId")
+        eventId= intent.getStringExtra("eventId")!! //na pewno nie null
         val db= Firebase.firestore
         val currentUser= FirebaseAuth.getInstance().currentUser
         val userId= currentUser?.uid
 
 
         finanseRecyclerView= binding.recyclerViewFinanse
-        finanseAdapter= FinanseAdapter()
+        finanseAdapter= FinanseAdapter(::payFinanse)
         finanseRecyclerView.adapter= finanseAdapter
         finanseRecyclerView.layoutManager= LinearLayoutManager(this)
 
@@ -39,9 +40,11 @@ class FinanseActivity : AppCompatActivity() {
                 .addOnSuccessListener { documents->
                     val finanseList= mutableListOf<Finanse>()
                     for(document in documents){
+                        val finanseId= document.id
                         val finanseName= document.getString("finanseName")
                         val amountFinanse= document.getString("amountFinanse")
-                        val finanse= Finanse(amountFinanse!!.toDouble(), eventId.toString(), finanseName.toString())
+                        val finanse= Finanse(amountFinanse!!.toDouble(), eventId, finanseId, finanseName.toString())
+
                         finanseList.add(finanse)
                     }
                     finanseAdapter.submitList(finanseList)
@@ -84,10 +87,16 @@ class FinanseActivity : AppCompatActivity() {
 
         binding.buttonAddFinanse.setOnClickListener {
             val intent= Intent(this, AddFinanseActivity::class.java)
-            intent.putExtra("eventId", eventId)
+            intent.putExtra("finanseId", eventId)
             startActivity(intent)
         }
 
+    }
 
+    private fun payFinanse(finanse: Finanse){
+        val intent= Intent(this, PayFinanseActivity::class.java)
+        intent.putExtra("finanseId", finanse.finanseId)
+        intent.putExtra("eventId", eventId)
+        startActivity(intent)
     }
 }
