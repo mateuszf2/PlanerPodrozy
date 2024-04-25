@@ -28,7 +28,7 @@ class PaymentAdapter: ListAdapter<Payment, PaymentAdapter.PaymentViewHolder>(Pay
         private val db= Firebase.firestore
 
         fun bind(payment: Payment) {
-            paymentText.text= "${payment.userId} wpłacił/wpłaciła na składkę ${payment.amountPayment} zł."
+            paymentText.text= "${payment.userEmail} wpłacił/wpłaciła na składkę ${payment.amountPayment} zł."
         }
     }
 

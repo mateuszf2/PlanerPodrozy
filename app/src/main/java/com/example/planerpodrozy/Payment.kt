@@ -1,6 +1,6 @@
 package com.example.planerpodrozy
 
 data class Payment(
-    val userId: String,
+    val userEmail: String,
     val amountPayment: Double
 )

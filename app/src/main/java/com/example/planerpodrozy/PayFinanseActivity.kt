@@ -42,12 +42,21 @@ class PayFinanseActivity : AppCompatActivity() {
                     for(document in documents){
                         val paymentUserId= document.getString("userId")!!
                         val amountPayment= document.getString("amountPay")!!.toDouble()
-                        val payment= Payment(paymentUserId, amountPayment)
+                        db.collection("idEmail")
+                            .whereEqualTo("userId", paymentUserId)
+                            .get()
+                            .addOnSuccessListener { emailDocument->
+                                for(ed in emailDocument){
+                                    val paymentEmail= ed.getString("userEmail")!!
+                                    val payment= Payment(paymentEmail, amountPayment)
+                                    paymentList.add(payment)
+                                    paymentAdapter.submitList(paymentList)
+                                }
+                            }
+                            .addOnFailureListener { e->
 
-                        paymentList.add(payment)
+                            }
                     }
-                    paymentAdapter.submitList(paymentList)
-
                 }
                 .addOnFailureListener { e->
 
