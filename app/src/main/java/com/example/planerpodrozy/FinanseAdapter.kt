@@ -27,20 +27,12 @@ class FinanseAdapter(private val onPayClickListener: (Finanse) -> Unit) : ListAd
         private val finanseName: TextView = itemView.findViewById(R.id.textView_finanseName)
         private val amountFinanse: TextView= itemView.findViewById(R.id.textView_amountFinanse)
         private val payButton: Button = itemView.findViewById(R.id.buttonPay)
-        private val recyclerViewPayments: RecyclerView= itemView.findViewById(R.id.recyclerView_payments)
-        private val db= Firebase.firestore
 
         fun bind(finanse: Finanse) {
             finanseName.text= finanse.finanseName
             amountFinanse.text= finanse.amountFinanse.toString()
             payButton.setOnClickListener {
                 onPayClickListener.invoke(finanse);
-            }
-
-            val paymentsList= mutableListOf<String>()
-            paymentsList.add("as")
-            recyclerViewPayments.adapter= PaymentAdapter(paymentsList) {
-
             }
 
         }

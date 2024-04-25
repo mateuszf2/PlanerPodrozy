@@ -1,8 +1,12 @@
 package com.example.planerpodrozy
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.example.planerpodrozy.databinding.ActivityPayFinanseBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -10,6 +14,8 @@ import com.google.firebase.firestore.firestore
 
 class PayFinanseActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPayFinanseBinding
+    private lateinit var paymentRecyclerView: RecyclerView
+    private lateinit var paymentAdapter: PaymentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -21,6 +27,33 @@ class PayFinanseActivity : AppCompatActivity() {
         val currentUser= FirebaseAuth.getInstance().currentUser
         val userId= currentUser?.uid
         val finanseId= intent.getStringExtra("finanseId")
+
+        paymentRecyclerView= binding.recyclerViewPayments
+        paymentAdapter= PaymentAdapter()
+        paymentRecyclerView.adapter= paymentAdapter
+        paymentRecyclerView.layoutManager= LinearLayoutManager(this)
+
+        if(userId!=null){
+            db.collection("finansePay")
+                .whereEqualTo("finanseId", finanseId)
+                .get()
+                .addOnSuccessListener { documents->
+                    val paymentList= mutableListOf<Payment>()
+                    for(document in documents){
+                        val paymentUserId= document.getString("userId")!!
+                        val amountPayment= document.getString("amountPay")!!.toDouble()
+                        val payment= Payment(paymentUserId, amountPayment)
+
+                        paymentList.add(payment)
+                    }
+                    paymentAdapter.submitList(paymentList)
+
+                }
+                .addOnFailureListener { e->
+
+                }
+        }
+
 
         binding.buttonAcceptPay.setOnClickListener{
             if(userId!=null){
