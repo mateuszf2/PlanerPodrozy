@@ -87,7 +87,7 @@ class FinanseActivity : AppCompatActivity() {
 
         binding.buttonAddFinanse.setOnClickListener {
             val intent= Intent(this, AddFinanseActivity::class.java)
-            intent.putExtra("finanseId", eventId)
+            intent.putExtra("eventId", eventId)
             startActivity(intent)
         }
 
