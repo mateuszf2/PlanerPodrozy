@@ -63,6 +63,9 @@
         <activity
             android:name=".CreateFriendActivity"
             android:exported="false" />
+        <activity
+            android:name=".Messaging"
+            android:exported="false" />
 
 
     </application>

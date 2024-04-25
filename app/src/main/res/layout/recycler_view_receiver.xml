@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentEnd="false"
-        android:background="@color/app_theme"
+        android:background="@drawable/receiver_bg"
         tools:ignore="UselessParent">
 
     <TextView
@@ -22,18 +22,16 @@
         android:textStyle="normal"
         android:textSize="18sp"
         android:padding="5dp"
-        android:layout_marginStart="25dp"
-        />
-        <TextView
-            android:id="@+id/txtTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/receiver_message"
-            android:textStyle="normal"
-            android:textSize="14sp"
-            android:padding="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_margin="5dp"
-            />
+        android:layout_marginStart="25dp" />
+    <TextView
+        android:id="@+id/txtTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/receiver_message"
+        android:textStyle="normal"
+        android:textSize="14sp"
+        android:padding="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_margin="5dp" />
     </LinearLayout>
 </RelativeLayout>

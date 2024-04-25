@@ -90,9 +90,13 @@ class FriendsListActivity: AppCompatActivity(),FriendsAdapter.OnEventClickListen
 
     //tu bedzie przekierowanie do czatu
     override fun onEventClick(friend: Friend) {
-        val intent = Intent(this, EventActivity::class.java)
+        val currentUser= FirebaseAuth.getInstance().currentUser
+        val intent = Intent(this, Messaging::class.java)
         //metoda putExtra przekazuje dane między komponentami aplikacji, dodaje dodatkowe informacje do obiektu "Intent"
-        intent.putExtra("friendEmail", friend.friendEmail)
+        if (currentUser?.email==friend.userEmail){
+            intent.putExtra("friendEmail", friend.friendEmail)
+        }
+        else intent.putExtra("friendEmail", friend.userEmail)
         startActivity(intent)
     }
 }

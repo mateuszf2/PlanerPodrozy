@@ -4,18 +4,32 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Filter
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
 
-class MessageAdapter (val context : Context, val messageList : ArrayList<MessageModel>):
-RecyclerView.Adapter<MessageAdapter.MessageViewHolder>(){
+class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHolder>
+    (MessageDiffCallback()) {
+
+    private var onEventClickListener: OnEventClickListener? = null
+
+
+    private val db= Firebase.firestore
     private val left = 0
     private val right  = 1
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): MessageAdapter.MessageViewHolder {
+
+
+    fun setOnEventClickListener(listener: OnEventClickListener) {
+        onEventClickListener = listener
+    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         return if(viewType==right){
             val messageView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_sender,parent,false)
             return MessageViewHolder(messageView)
@@ -24,30 +38,43 @@ RecyclerView.Adapter<MessageAdapter.MessageViewHolder>(){
             val messageView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_receiver,parent,false)
             return MessageViewHolder(messageView)
         }
-
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(messageList[position].sender==FirebaseAuth.getInstance().currentUser?.uid.toString()){
-            left
-        }
-        else{
+        return if(getItem(position).messageSender==FirebaseAuth.getInstance().currentUser?.email.toString()){
             right
         }
+        else{
+            left
+        }
     }
 
-    override fun onBindViewHolder(holder: MessageAdapter.MessageViewHolder, position: Int) {
-        val list = messageList[position]
-        holder.message.text=list.message
-        holder.time.text=list.timeStamp
+    override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
+        val currentMessage = getItem(position)
+        holder.bind(currentMessage)
     }
 
-    override fun getItemCount(): Int {
-        return messageList.size
+    inner class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val messageTextView: TextView = itemView.findViewById(R.id.txtMessage)
+        private val timeTextView: TextView = itemView.findViewById(R.id.txtTime)
+        fun bind(message: MessageModel) {
+            messageTextView.text=message.message
+            timeTextView.text=message.messageTime
+        }
     }
-    class MessageViewHolder(view : View):RecyclerView.ViewHolder(view){
-        val message : TextView = view.findViewById(R.id.txtMessage)
-        val time: TextView = view.findViewById(R.id.txtTime)
 
+    class MessageDiffCallback : DiffUtil.ItemCallback<MessageModel>() {
+        override fun areItemsTheSame(oldItem: MessageModel, newItem: MessageModel): Boolean {
+            return oldItem.messageSender == newItem.messageSender
+        }
+
+        override fun areContentsTheSame(oldItem:MessageModel, newItem:MessageModel): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+    interface OnEventClickListener{
     }
 }
+
+
