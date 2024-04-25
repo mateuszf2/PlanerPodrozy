@@ -83,9 +83,11 @@ class Messaging : AppCompatActivity(),MessageAdapter.OnEventClickListener{
             db.collection("chats").document(chatroomId)
                 .collection("messages")
                 .orderBy("messageTime", Query.Direction.ASCENDING)
-                .get()
-                .addOnSuccessListener{ documents->
-                    for (document in documents){
+                //.get()
+                .addSnapshotListener(){ documents,error->
+                    messagesList.clear()
+
+                    for (document in documents!!){
                         val message = MessageModel(
                             document.get("message").toString(),
                             document.get("messageSender").toString(),
@@ -156,7 +158,8 @@ class Messaging : AppCompatActivity(),MessageAdapter.OnEventClickListener{
                     .collection("messages").add(messageObject).addOnSuccessListener {
                     Log.d("onSuccess", "Succesfully sent message")
                     fetchMessages(chatroomId)
-                    sendMessageEditText.text.clear()
+
+                        sendMessageEditText.text.clear()
                 }
             }
         }
