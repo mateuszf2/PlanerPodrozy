@@ -26,11 +26,28 @@ class FinanseAdapter(private val onPayClickListener: (Finanse) -> Unit) : ListAd
     inner class FinanseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val finanseName: TextView = itemView.findViewById(R.id.textView_finanseName)
         private val amountFinanse: TextView= itemView.findViewById(R.id.textView_amountFinanse)
+        private val amountMinusPayment: TextView= itemView.findViewById(R.id.textView_amountMinusPayment)
         private val payButton: Button = itemView.findViewById(R.id.buttonPay)
+        private val db= Firebase.firestore
 
         fun bind(finanse: Finanse) {
             finanseName.text= finanse.finanseName
-            amountFinanse.text= finanse.amountFinanse.toString()
+            amountFinanse.text= "Całkowita kwota składki: ${finanse.amountFinanse.toString()}"
+            var amountLeft= finanse.amountFinanse
+
+            db.collection("finansePay")
+                .whereEqualTo("finanseId", finanse.finanseId)
+                .get()
+                .addOnSuccessListener { paymentDocuments ->
+                    for(pd in paymentDocuments){
+                        amountLeft-= pd.getString("amountPay")!!.toDouble()
+                    }
+                    amountMinusPayment.text= "Pozostało: ${amountLeft.toString()}"
+                }
+                .addOnFailureListener { e->
+
+                }
+
             payButton.setOnClickListener {
                 onPayClickListener.invoke(finanse);
             }
