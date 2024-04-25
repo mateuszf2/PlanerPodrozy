@@ -60,6 +60,7 @@ class Messaging : AppCompatActivity(),MessageAdapter.OnEventClickListener{
         val currentUser = FirebaseAuth.getInstance().currentUser
         val userId = currentUser?.uid.toString()
         val userEmail = currentUser?.email.toString()
+        var i=0
         chatroomId=""
 
         binding = ActivityMessagingBinding.inflate(layoutInflater)
@@ -97,9 +98,8 @@ class Messaging : AppCompatActivity(),MessageAdapter.OnEventClickListener{
                     }
                     MessageAdapter.submitList(messagesList)
                     MessageRecyclerView.scrollToPosition(documents.size()-1)
-                    MessageAdapter.notifyDataSetChanged()
-
                 }
+
         }
         fun checkIfChatroomExist() :String{
             val friendNameTextView: TextView = findViewById(R.id.textView_friendName)
@@ -133,8 +133,9 @@ class Messaging : AppCompatActivity(),MessageAdapter.OnEventClickListener{
             return chatroomId
         }
         fun formatTimestamp(timestamp: Timestamp): String {
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-            val date = Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000)
+            Locale.setDefault(Locale("pl", "PL"))
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault() )
+            val date = Date((timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000))
             return dateFormat.format(date)
         }
         fun sendMessage(){
@@ -144,18 +145,19 @@ class Messaging : AppCompatActivity(),MessageAdapter.OnEventClickListener{
             }
             else{
                 val formattedDate = formatTimestamp(Timestamp.now())
-                val messageObject = mutableMapOf<String, String>().also{
-                    it["message"] = message
-                    it["messageSender"] = userEmail
-                    it["messageReceiver"] =friendEmail
-                    it["messageTime"] = formattedDate
-                }
+                val messageObject = MessageModel(
+                    message,
+                    userEmail,
+                    friendEmail,
+                    formattedDate
+                )
                 db.collection("chats").document(chatroomId).set(messageObject)
                 db.collection("chats").document(chatroomId)
                     .collection("messages").add(messageObject).addOnSuccessListener {
                     Log.d("onSuccess", "Succesfully sent message")
                     fetchMessages(chatroomId)
-                    }
+                    sendMessageEditText.text.clear()
+                }
             }
         }
 
