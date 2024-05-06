@@ -75,7 +75,7 @@ class MembersActivity : AppCompatActivity() {
         }
 
         val recyclerView: RecyclerView= findViewById(R.id.recycler_view_MenuBar)
-        val options= arrayOf("Podstawowe informacje", "Członkowie", "Wspólne finanse", "Kalendarz", "Zamknij")
+        val options= arrayOf("Podstawowe informacje", "Członkowie", "Wspólne finanse", "Planer Dnia", "Zamknij")
         val menuAdapter= MenuBarAdapter(options) { selectedOption ->
             if(selectedOption == "Zamknij") {
                 recyclerView.visibility = View.GONE
