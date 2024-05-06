@@ -65,11 +65,11 @@ class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHol
 
     class MessageDiffCallback : DiffUtil.ItemCallback<MessageModel>() {
         override fun areItemsTheSame(oldItem: MessageModel, newItem: MessageModel): Boolean {
-            return oldItem.messageSender == newItem.messageSender
+            return true
         }
 
         override fun areContentsTheSame(oldItem:MessageModel, newItem:MessageModel): Boolean {
-            return oldItem == newItem
+            return true
         }
     }
 

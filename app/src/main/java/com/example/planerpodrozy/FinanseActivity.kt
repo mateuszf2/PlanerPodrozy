@@ -27,6 +27,8 @@ class FinanseActivity : AppCompatActivity() {
         val currentUser= FirebaseAuth.getInstance().currentUser
         val userId= currentUser?.uid
 
+        var sumAll: Double = 0.0
+        var sumUser: Double = 0.0
 
         finanseRecyclerView= binding.recyclerViewFinanse
         finanseAdapter= FinanseAdapter(::payFinanse)
@@ -46,6 +48,8 @@ class FinanseActivity : AppCompatActivity() {
                         val finanse= Finanse(amountFinanse!!.toDouble(), eventId, finanseId, finanseName.toString())
 
                         finanseList.add(finanse)
+                        sumAll+= amountFinanse.toDouble() //sumuje wszystkie składki dla tego wydarzenia
+                        binding.textViewSumAll.text= "Suma składek\n${sumAll.toString()}" //wyświetla sumę wszystkich składek tego wydarzenia
                     }
                     finanseAdapter.submitList(finanseList)
                 }
@@ -53,6 +57,27 @@ class FinanseActivity : AppCompatActivity() {
 
                 }
         }
+
+        //sumuje wszystkie wpłaty użytkownika
+        if(userId!=null){
+            db.collection("finansePay")
+                .whereEqualTo("eventId", eventId)
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnSuccessListener { documents ->
+                    for(document in documents){
+                        val currentAmount= document.getString("amountPay")!!.toDouble()
+                        sumUser+=currentAmount
+                        binding.textViewSumUser.text= "Suma wpłat\n${sumUser.toString()}" //wyświetlanie na sumy wszystki wpłat użytkownika
+                    }
+                }
+                .addOnFailureListener { e->
+
+                }
+        }
+
+
+
 
         val menuRecyclerView= binding.recyclerViewMenuBar
         val options= arrayOf("Podstawowe informacje", "Członkowie", "Wspólne finanse", "Planer Dnia", "Zamknij")
@@ -87,7 +112,7 @@ class FinanseActivity : AppCompatActivity() {
 
         binding.buttonAddFinanse.setOnClickListener {
             val intent= Intent(this, AddFinanseActivity::class.java)
-            intent.putExtra("finanseId", eventId)
+            intent.putExtra("eventId", eventId)
             startActivity(intent)
         }
 

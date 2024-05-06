@@ -60,7 +60,6 @@ class Messaging : AppCompatActivity(),MessageAdapter.OnEventClickListener{
         val currentUser = FirebaseAuth.getInstance().currentUser
         val userId = currentUser?.uid.toString()
         val userEmail = currentUser?.email.toString()
-        var i=0
         chatroomId=""
 
         binding = ActivityMessagingBinding.inflate(layoutInflater)
@@ -83,23 +82,28 @@ class Messaging : AppCompatActivity(),MessageAdapter.OnEventClickListener{
             db.collection("chats").document(chatroomId)
                 .collection("messages")
                 .orderBy("messageTime", Query.Direction.ASCENDING)
-                .get()
-                .addOnSuccessListener{ documents->
-                    for (document in documents){
-                        val message = MessageModel(
-                            document.get("message").toString(),
-                            document.get("messageSender").toString(),
-                            document.get("messageReceiver").toString(),
-                            document.get("messageTime").toString()
-                        )
-                        if (message != null ){
-                            messagesList.add(message)
+                //.get()
+                .addSnapshotListener(){ documents,error->
+                    messagesList.clear()
+
+                    if(documents!=null) {
+                        for (document in documents!!) {
+                            val message = MessageModel(
+                                document.get("message").toString(),
+                                document.get("messageSender").toString(),
+                                document.get("messageReceiver").toString(),
+                                document.get("messageTime").toString()
+                            )
+                            if (message != null) {
+                                messagesList.add(message)
+                            }
                         }
+
                     }
                     MessageAdapter.submitList(messagesList)
-                    MessageRecyclerView.scrollToPosition(documents.size()-1)
-                }
+                    MessageRecyclerView.scrollToPosition(messagesList.size - 1)
 
+                }
         }
         fun checkIfChatroomExist() :String{
             val friendNameTextView: TextView = findViewById(R.id.textView_friendName)
@@ -125,13 +129,14 @@ class Messaging : AppCompatActivity(),MessageAdapter.OnEventClickListener{
                         .addSnapshotListener { value, error ->
                             if (value != null) {
                                 for (document in value){
-                                        Picasso.get().load(document.getString("zdjecieLink")).error(R.drawable.user).into(profilePhotoImageView)
+                                    Picasso.get().load(document.getString("zdjecieLink")).error(R.drawable.user).into(profilePhotoImageView)
                                 }
                             }
                         }
                 }
             return chatroomId
         }
+
         fun formatTimestamp(timestamp: Timestamp): String {
             Locale.setDefault(Locale("pl", "PL"))
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault() )
@@ -155,15 +160,12 @@ class Messaging : AppCompatActivity(),MessageAdapter.OnEventClickListener{
                 db.collection("chats").document(chatroomId)
                     .collection("messages").add(messageObject).addOnSuccessListener {
                     Log.d("onSuccess", "Succesfully sent message")
-                    fetchMessages(chatroomId)
                     sendMessageEditText.text.clear()
                 }
             }
         }
 
         checkIfChatroomExist()
-
-
         binding.btSendMessage.setOnClickListener(){
             sendMessage()
         }
