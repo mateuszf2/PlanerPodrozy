@@ -25,8 +25,6 @@ class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHol
     private val db= Firebase.firestore
     private val left = 0
     private val right  = 1
-    private var help=0;
-
 
     fun setOnEventClickListener(listener: OnEventClickListener) {
         onEventClickListener = listener
@@ -44,7 +42,6 @@ class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHol
 
     override fun getItemViewType(position: Int): Int {
         if(getItem(position).messageSender==FirebaseAuth.getInstance().currentUser?.email.toString()){
-            help=1
             return right
         }
         else{
@@ -64,10 +61,7 @@ class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHol
         fun bind(message: MessageModel) {
             messageTextView.text=message.message
             timeTextView.text=message.messageTime
-            if(help==1){
-                nameTextView.text=message.messageSender
-            }
-            else nameTextView.text=message.messageReceiver
+            nameTextView.text=message.messageSender
         }
     }
 
