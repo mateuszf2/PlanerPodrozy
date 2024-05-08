@@ -96,6 +96,11 @@ class FinanseActivity : AppCompatActivity() {
                 intent.putExtra("eventId", eventId)
                 startActivity(intent)
             }
+            else if(selectedOption == "Planer Dnia"){
+                val intent= Intent(this, PlanerActivity::class.java)
+                intent.putExtra("eventId", eventId)
+                startActivity(intent)
+            }
         }
         menuRecyclerView.adapter= menuAdapter
         menuRecyclerView.layoutManager= LinearLayoutManager(this)

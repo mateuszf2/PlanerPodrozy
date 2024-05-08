@@ -91,6 +91,11 @@ class MembersActivity : AppCompatActivity() {
                 intent.putExtra("eventId", eventId)
                 startActivity(intent)
             }
+            else if(selectedOption == "Planer Dnia"){
+                val intent= Intent(this, PlanerActivity::class.java)
+                intent.putExtra("eventId", eventId)
+                startActivity(intent)
+            }
         }
         recyclerView.adapter= menuAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)

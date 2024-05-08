@@ -28,4 +28,6 @@ class MenuBarAdapter(private val options: Array<String>, private val listener: (
     }
 
     override fun getItemCount() = options.size
+
+
 }

@@ -11,92 +11,93 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.planerpodrozy.databinding.ActivityEventBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.firestore
-import kotlinx.coroutines.selects.select
+import com.google.firebase.firestore.FirebaseFirestore
 
-
-class EventActivity:AppCompatActivity() {
+class EventActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEventBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val db= Firebase.firestore
-        val eventsCollectionRef= db.collection("wydarzenia")
+        val db = FirebaseFirestore.getInstance()
+        val eventsCollectionRef = db.collection("wydarzenia")
         val currentUser = FirebaseAuth.getInstance().currentUser
         val userId = currentUser?.uid
-        //odczytanie id wydarzenia z intentu(id_wydarzenia czyli id dokumentu wydarzenia z firebase)
         val eventId = intent.getStringExtra("eventId")
 
         binding = ActivityEventBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        binding.buttonBack.setOnClickListener{
+        binding.buttonBack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
-        binding.buttonAddFriend.setOnClickListener{
-            val intent= Intent(this, InviteToEventActivity::class.java)
+        binding.buttonAddFriend.setOnClickListener {
+            val intent = Intent(this, InviteToEventActivity::class.java)
             intent.putExtra("eventId", eventId)
             startActivity(intent)
         }
 
-        val recyclerView: RecyclerView= findViewById(R.id.recycler_view_MenuBar)
-        val options= arrayOf("Podstawowe informacje", "Członkowie", "Wspólne finanse", "Planer Dnia", "Zamknij")
-        val adapter= MenuBarAdapter(options) { selectedOption ->
-            if(selectedOption == "Zamknij") {
-                recyclerView.visibility = View.GONE
-                binding.buttonMenuBar.visibility= View.VISIBLE
-            }
-            else if(selectedOption == "Członkowie") {
-                val intent= Intent(this, MembersActivity::class.java)
-                intent.putExtra("eventId", eventId)
-                startActivity(intent)
-            }
-            else if(selectedOption == "Wspólne finanse"){
-                val intent= Intent(this, FinanseActivity::class.java)
-                intent.putExtra("eventId", eventId)
-                startActivity(intent)
+        val recyclerView: RecyclerView = findViewById(R.id.recycler_view_MenuBar)
+        val options = arrayOf("Podstawowe informacje", "Członkowie", "Wspólne finanse", "Planer Dnia", "Zamknij")
+        val adapter = MenuBarAdapter(options) { selectedOption ->
+            when (selectedOption) {
+                "Zamknij" -> {
+                    recyclerView.visibility = View.GONE
+                    binding.buttonMenuBar.visibility = View.VISIBLE
+                }
+                "Członkowie" -> {
+                    val intent = Intent(this, MembersActivity::class.java)
+                    intent.putExtra("eventId", eventId)
+                    startActivity(intent)
+                }
+                "Wspólne finanse" -> {
+                    val intent = Intent(this, FinanseActivity::class.java)
+                    intent.putExtra("eventId", eventId)
+                    startActivity(intent)
+                }
+                "Planer Dnia" -> {
+                    if (eventId != null) {
+                        val intent = Intent(this, PlanerActivity::class.java)
+                        intent.putExtra("eventId", eventId)
+                        startActivity(intent)
+                    } else {
+                        Log.e("EventActivity", "eventId is null, cannot start PlanerActivity")
+                    }
+                }
             }
         }
-        recyclerView.adapter= adapter
+        recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        binding.buttonMenuBar.setOnClickListener{
-            recyclerView.visibility= View.VISIBLE
-            binding.buttonMenuBar.visibility= View.GONE
+        binding.buttonMenuBar.setOnClickListener {
+            recyclerView.visibility = View.VISIBLE
+            binding.buttonMenuBar.visibility = View.GONE
         }
 
-        if(userId!=null){
-            //pobranie intentu, która uruchomił aktywność
-            val intent = intent
+        if (eventId != null) {
+            eventsCollectionRef.document(eventId)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        val eventName = document.getString("nazwa_wydarzenia")
+                        val location = document.getString("lokalizacja")
+                        val date = document.getString("data")
 
-            if(eventId!=null){
-                eventsCollectionRef.document(eventId)
-                    .get()
-                    .addOnSuccessListener { document ->
-                        if(document != null){
-                            val documentData = document.data
-                            if(documentData != null){
-                                val eventName = documentData["nazwa_wydarzenia"]
-                                val location = documentData["lokalizacja"]
-                                val data = documentData["data"]
-                                val eventNameTextView: TextView = findViewById<TextView>(R.id.textView_eventName)
-                                val locationTextView: TextView = findViewById<TextView>(R.id.textView_location)
-                                val dateTextView: TextView = findViewById<TextView>(R.id.textView_date)
-                                eventNameTextView.text = eventName.toString()
-                                locationTextView.text = location.toString()
-                                dateTextView.text = data.toString()
-                            }
-                        }
+                        val eventNameTextView: TextView = findViewById(R.id.textView_eventName)
+                        val locationTextView: TextView = findViewById(R.id.textView_location)
+                        val dateTextView: TextView = findViewById(R.id.textView_date)
+
+                        eventNameTextView.text = eventName
+                        locationTextView.text = location
+                        dateTextView.text = date
+                    } else {
+                        Log.e("EventActivity", "Document for eventId: $eventId does not exist")
                     }
-                    .addOnFailureListener{ exception->
-                        Log.d("TAG", "Błąd podczas pobierania dokumentu: ", exception)
-                    }
-            }
+                }
+                .addOnFailureListener { exception ->
+                    Log.e("EventActivity", "Error getting document for eventId: $eventId", exception)
+                }
         }
-
-
     }
 }

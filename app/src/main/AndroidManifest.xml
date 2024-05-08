@@ -66,7 +66,14 @@
         <activity
             android:name=".Messaging"
             android:exported="false" />
-
+        <activity
+            android:name=".AddPlanerActivity"
+            android:exported="false"
+             />
+        <activity
+            android:name=".PlanerActivity"
+            android:exported="false"
+            />
 
     </application>
 
