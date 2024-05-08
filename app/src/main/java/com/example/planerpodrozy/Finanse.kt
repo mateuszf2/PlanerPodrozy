@@ -6,5 +6,6 @@ class Finanse (
     val amountFinanse: Double,
     val eventId: String,
     val finanseId: String,
-    val finanseName: String
+    val finanseName: String,
+    val userId: String
 )

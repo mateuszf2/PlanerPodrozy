@@ -35,7 +35,8 @@ class AddFinanseActivity: AppCompatActivity() {
                     val finanseData= hashMapOf(
                         "eventId" to eventId,
                         "finanseName" to finanseName,
-                        "amountFinanse" to amountFinanse
+                        "amountFinanse" to amountFinanse,
+                        "userId" to userId
                     )
                     db.collection("finanse")
                         .add(finanseData)

@@ -38,7 +38,8 @@ class CreateEventActivity:AppCompatActivity() {
                 val eventData = hashMapOf(
                     "nazwa_wydarzenia" to eventName,
                     "lokalizacja" to location,
-                    "data" to date
+                    "data" to date,
+                    "usersNumber" to 1 //Po utworzeniu wydarzenia, początkowo jest 1 uczestnik, zwiększamy uczestników po akceptacji zaproszenia do wydarzenia
                 )
                 eventsCollectionRef.add(eventData)
                     .addOnSuccessListener { documentReference ->

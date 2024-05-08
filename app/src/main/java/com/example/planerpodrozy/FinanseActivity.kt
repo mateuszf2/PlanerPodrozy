@@ -45,7 +45,8 @@ class FinanseActivity : AppCompatActivity() {
                         val finanseId= document.id
                         val finanseName= document.getString("finanseName")
                         val amountFinanse= document.getString("amountFinanse")
-                        val finanse= Finanse(amountFinanse!!.toDouble(), eventId, finanseId, finanseName.toString())
+                        val userIdFinanse= document.getString("userId")
+                        val finanse= Finanse(amountFinanse!!.toDouble(), eventId, finanseId, finanseName.toString(), userIdFinanse.toString())
 
                         finanseList.add(finanse)
                         sumAll+= amountFinanse.toDouble() //sumuje wszystkie składki dla tego wydarzenia

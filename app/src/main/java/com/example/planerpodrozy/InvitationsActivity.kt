@@ -96,6 +96,14 @@ class InvitationsActivity : AppCompatActivity(), InvitationAdapter.OnEventClickL
             db.collection("wydarzeniaUzytkownicy")
                 .add(wydarzenieUzytkownik)
                 .addOnSuccessListener { documentReference ->
+                    //AKTUALIZACJA LICZBY UCZESTNIKÓW W WYDARZENIU PO ZAAKCEPTOWANIU ZAPROSZENIA
+                    db.collection("wydarzenia").document(event.eventId).get().addOnSuccessListener {document ->
+                        val usersNumberString= document?.data?.get("usersNumber").toString()
+                        var newUsersNumber= usersNumberString.toInt()
+                        newUsersNumber++
+                        db.collection("wydarzenia").document(event.eventId).update("usersNumber", newUsersNumber)
+                    }
+
                     db.collection("zaproszenia")
                         .whereEqualTo("eventId", event.eventId)
                         .get()
