@@ -1,17 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="70dp"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="6dp"
 
     android:elevation="4dp">
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="200dp"
+        android:layout_height="15dp"
+        android:layout_marginRight="200dp"
+        android:textStyle="normal"
+        android:text="name"
+        android:textSize="13sp"
+        android:textColor="@color/black"
+        android:textAlignment="textStart"
+        android:paddingLeft="10dp"
+        />
+
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentEnd="false"
         android:background="@drawable/receiver_bg"
+        android:layout_marginTop="18dp"
         tools:ignore="UselessParent">
 
     <TextView
