@@ -1,6 +1,7 @@
 package com.example.planerpodrozy
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHol
     private val db= Firebase.firestore
     private val left = 0
     private val right  = 1
+    private var help=0;
 
 
     fun setOnEventClickListener(listener: OnEventClickListener) {
@@ -41,11 +43,12 @@ class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHol
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(getItem(position).messageSender==FirebaseAuth.getInstance().currentUser?.email.toString()){
-            right
+        if(getItem(position).messageSender==FirebaseAuth.getInstance().currentUser?.email.toString()){
+            help=1
+            return right
         }
         else{
-            left
+            return left
         }
     }
 
@@ -57,9 +60,14 @@ class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHol
     inner class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val messageTextView: TextView = itemView.findViewById(R.id.txtMessage)
         private val timeTextView: TextView = itemView.findViewById(R.id.txtTime)
+        private val nameTextView: TextView = itemView.findViewById(R.id.txtName)
         fun bind(message: MessageModel) {
             messageTextView.text=message.message
             timeTextView.text=message.messageTime
+            if(help==1){
+                nameTextView.text=message.messageSender
+            }
+            else nameTextView.text=message.messageReceiver
         }
     }
 
