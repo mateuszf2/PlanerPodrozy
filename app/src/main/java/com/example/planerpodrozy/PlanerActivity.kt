@@ -79,8 +79,8 @@ class PlanerActivity : AppCompatActivity() {
                 intent.putExtra("eventId", eventId)
                 startActivity(intent)
             }
-            else if(selectedOption == "Planer Dnia"){
-                val intent= Intent(this, PlanerActivity::class.java)
+            else if(selectedOption == "Wspólne finanse"){
+                val intent= Intent(this, FinanseActivity::class.java)
                 intent.putExtra("eventId", eventId)
                 startActivity(intent)
             }
