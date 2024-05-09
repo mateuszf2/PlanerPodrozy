@@ -74,6 +74,10 @@
             android:name=".PlanerActivity"
             android:exported="false"
             />
+        <activity
+            android:name=".GroupMessagingActivity"
+            android:exported="false"
+            />
 
     </application>
 
