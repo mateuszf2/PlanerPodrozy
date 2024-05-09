@@ -111,6 +111,13 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
                     Log.e("EventActivity", "Error getting document for eventId: $eventId", exception)
                 }
         }
+
+        binding.btGroupChat.setOnClickListener{
+            val intent = Intent(this, GroupMessagingActivity::class.java)
+            intent.putExtra("eventId",eventId)
+            startActivity(intent)
+        }
+
     }
     //MAPA GOOGLE
     override fun onMapReady(googleMap: GoogleMap) {
