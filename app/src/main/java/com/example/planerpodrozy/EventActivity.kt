@@ -118,6 +118,7 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(intent)
         }
 
+
     }
     //MAPA GOOGLE
     override fun onMapReady(googleMap: GoogleMap) {
