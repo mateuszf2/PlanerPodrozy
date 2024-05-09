@@ -78,8 +78,6 @@ class FinanseActivity : AppCompatActivity() {
         }
 
 
-
-
         val menuRecyclerView= binding.recyclerViewMenuBar
         val options= arrayOf("Podstawowe informacje", "Członkowie", "Wspólne finanse", "Planer Dnia", "Zamknij")
         val menuAdapter= MenuBarAdapter(options) {selectedOption->

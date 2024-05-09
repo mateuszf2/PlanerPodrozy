@@ -9,12 +9,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planerpodrozy.databinding.ActivityEventBinding
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class EventActivity : AppCompatActivity() {
+class EventActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityEventBinding
+    private lateinit var myMap: GoogleMap
+    private lateinit var location: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +34,10 @@ class EventActivity : AppCompatActivity() {
 
         binding = ActivityEventBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //MAPA GOOGLE
+        val mapFragment= supportFragmentManager.findFragmentById(R.id.id_map) as SupportMapFragment
+        mapFragment.getMapAsync(this) // Tutaj this odnosi się do klasy MainActivity, która implementuje OnMapReadyCallback
 
         binding.buttonBack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
@@ -81,7 +93,7 @@ class EventActivity : AppCompatActivity() {
                 .addOnSuccessListener { document ->
                     if (document != null && document.exists()) {
                         val eventName = document.getString("nazwa_wydarzenia")
-                        val location = document.getString("lokalizacja")
+                        location = document.getString("lokalizacja")!!
                         val date = document.getString("data")
 
                         val eventNameTextView: TextView = findViewById(R.id.textView_eventName)
@@ -99,5 +111,18 @@ class EventActivity : AppCompatActivity() {
                     Log.e("EventActivity", "Error getting document for eventId: $eventId", exception)
                 }
         }
+    }
+    //MAPA GOOGLE
+    override fun onMapReady(googleMap: GoogleMap) {
+        myMap = googleMap
+        // Tutaj można dodać konfiguracje mapy
+
+        val warsawLatLng = LatLng(52.2297, 21.0122)
+
+        // znacznik na mapę dla Warszawy
+        myMap.addMarker(MarkerOptions().position(warsawLatLng).title("Warszawa"))
+
+        // przesunięcie kamery na znacznik
+        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(warsawLatLng, 10f))
     }
 }
