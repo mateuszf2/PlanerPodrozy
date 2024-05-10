@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Messaging"
+    tools:context=".GroupMessagingActivity"
     android:background="@drawable/background_layout">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,14 +14,14 @@
         android:padding="16dp">
 
         <ImageView
-            android:id="@+id/iv_profile_photo"
+            android:id="@+id/iv_group_profile_photo"
             android:layout_width="51dp"
             android:layout_height="45dp"
             android:cropToPadding="false"
-            android:src="@drawable/user" />
+            android:src="@drawable/group_chat" />
 
         <TextView
-            android:id="@+id/textView_friendName"
+            android:id="@+id/textView_groupName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"

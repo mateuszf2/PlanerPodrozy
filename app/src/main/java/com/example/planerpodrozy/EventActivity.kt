@@ -23,6 +23,7 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityEventBinding
     private lateinit var myMap: GoogleMap
     private lateinit var location: String
+    private lateinit var eventName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +32,6 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
         val currentUser = FirebaseAuth.getInstance().currentUser
         val userId = currentUser?.uid
         val eventId = intent.getStringExtra("eventId")
-
         binding = ActivityEventBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -92,7 +92,7 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
                 .get()
                 .addOnSuccessListener { document ->
                     if (document != null && document.exists()) {
-                        val eventName = document.getString("nazwa_wydarzenia")
+                        eventName = document.getString("nazwa_wydarzenia").toString()
                         location = document.getString("lokalizacja")!!
                         val date = document.getString("data")
 
@@ -115,6 +115,7 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.btGroupChat.setOnClickListener{
             val intent = Intent(this, GroupMessagingActivity::class.java)
             intent.putExtra("eventId",eventId)
+            intent.putExtra("eventName",eventName)
             startActivity(intent)
         }
 

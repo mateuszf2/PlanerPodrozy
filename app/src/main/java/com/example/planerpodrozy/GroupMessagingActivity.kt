@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planerpodrozy.databinding.ActivityEventBinding
+import com.example.planerpodrozy.databinding.ActivityGroupMessagingBinding
 import com.example.planerpodrozy.databinding.ActivityMessagingBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Firebase
@@ -44,7 +45,7 @@ import java.util.Date
 import java.util.Locale
 
 class GroupMessagingActivity : AppCompatActivity(),MessageAdapter.OnEventClickListener{
-    private lateinit var binding: ActivityMessagingBinding
+    private lateinit var binding: ActivityGroupMessagingBinding
     private lateinit var sendMessageEditText: EditText
     private lateinit var sendMessageButton: FloatingActionButton
     private lateinit var chatroomId:String
@@ -61,7 +62,7 @@ class GroupMessagingActivity : AppCompatActivity(),MessageAdapter.OnEventClickLi
         val userEmail = currentUser?.email.toString()
         chatroomId=""
 
-        binding = ActivityMessagingBinding.inflate(layoutInflater)
+        binding = ActivityGroupMessagingBinding.inflate(layoutInflater)
         sendMessageButton = binding.btSendMessage
         sendMessageEditText = binding.etSendMessage
 
@@ -75,10 +76,8 @@ class GroupMessagingActivity : AppCompatActivity(),MessageAdapter.OnEventClickLi
         MessageAdapter.setOnEventClickListener(this)
 
         val eventId = intent.getStringExtra("eventId").toString()
+        val eventName = intent.getStringExtra("eventName").toString()
         val friendEmail = "group"
-
-        Log.d("YYYYYYYYY",eventId)
-        Log.d("YYYYYYYYY",eventId)
 
         fun fetchMessages(chatroomId:String){
             val messagesList = mutableListOf<MessageModel>()
@@ -109,8 +108,7 @@ class GroupMessagingActivity : AppCompatActivity(),MessageAdapter.OnEventClickLi
                 }
         }
         fun checkIfChatroomExist() :String{
-            val friendNameTextView: TextView = findViewById(R.id.textView_friendName)
-            val profilePhotoImageView: ImageView =findViewById(R.id.iv_profile_photo)
+            val groupNameTextView: TextView = findViewById(R.id.textView_groupName)
 
             db.collection("groupChats").document(eventId)
                 .get()
@@ -123,10 +121,7 @@ class GroupMessagingActivity : AppCompatActivity(),MessageAdapter.OnEventClickLi
                     fetchMessages(chatroomId)
                 }
 
-            Log.d("XXXXXXXX",chatroomId)
-            Log.d("XXXXXXXX",chatroomId)
-            Log.d("XXXXXXXX",chatroomId)
-
+            groupNameTextView.text=eventName
             return chatroomId
         }
 
