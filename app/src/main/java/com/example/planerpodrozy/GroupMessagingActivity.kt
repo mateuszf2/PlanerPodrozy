@@ -94,7 +94,9 @@ class GroupMessagingActivity : AppCompatActivity(),MessageAdapter.OnEventClickLi
                                 document.get("message").toString(),
                                 document.get("messageSender").toString(),
                                 document.get("messageReceiver").toString(),
-                                document.get("messageTime").toString()
+                                document.get("messageTime").toString(),
+                                document.get("messagePreviousSender").toString(),
+                                document.get("messagePreviousTime").toString()
                             )
                             if (message != null) {
                                 messagesList.add(message)
@@ -137,18 +139,48 @@ class GroupMessagingActivity : AppCompatActivity(),MessageAdapter.OnEventClickLi
                 sendMessageEditText.error = "Enter some message to send"
             }
             else{
-                val formattedDate = formatTimestamp(Timestamp.now())
-                val messageObject = MessageModel(
-                    message,
-                    userEmail,
-                    friendEmail,
-                    formattedDate
-                )
-                db.collection("groupChats").document(chatroomId).set(messageObject)
-                db.collection("groupChats").document(chatroomId)
-                    .collection("messages").add(messageObject).addOnSuccessListener {
-                        Log.d("onSuccess", "Succesfully sent message")
-                        sendMessageEditText.text.clear()
+                var messagePreviousSender =""
+                var messagePreviousTime=""
+                //potrzebne przechowywanie poprzedniej wiadomosci
+                db.collection("groupChats").document(chatroomId).get().addOnSuccessListener{document->
+                    messagePreviousSender=document.get("messageSender").toString()
+                    messagePreviousTime= document.get("messageTime").toString()
+
+                    val formattedDate = formatTimestamp(Timestamp.now())
+                    val messageObject = MessageModel(
+                        message,
+                        userEmail,
+                        friendEmail,
+                        formattedDate,
+                        messagePreviousSender,
+                        messagePreviousTime
+                    )
+                    db.collection("groupChats").document(chatroomId).set(messageObject)
+                    db.collection("groupChats").document(chatroomId)
+                        .collection("messages").add(messageObject).addOnSuccessListener {
+                            Log.d("onSuccess", "Succesfully sent message")
+                            sendMessageEditText.text.clear()
+                        }
+                }
+                    .addOnFailureListener{exception->
+                        messagePreviousSender="null"
+                        messagePreviousTime="null"
+
+                        val formattedDate = formatTimestamp(Timestamp.now())
+                        val messageObject = MessageModel(
+                            message,
+                            userEmail,
+                            friendEmail,
+                            formattedDate,
+                            messagePreviousSender,
+                            messagePreviousTime
+                        )
+                        db.collection("groupChats").document(chatroomId).set(messageObject)
+                        db.collection("groupChats").document(chatroomId)
+                            .collection("messages").add(messageObject).addOnSuccessListener {
+                                Log.d("onSuccess", "Succesfully sent message")
+                                sendMessageEditText.text.clear()
+                            }
                     }
             }
         }

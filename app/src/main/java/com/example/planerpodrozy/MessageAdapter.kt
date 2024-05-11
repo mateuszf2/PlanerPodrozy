@@ -1,20 +1,18 @@
 package com.example.planerpodrozy
 
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.squareup.picasso.Picasso
+import java.time.LocalTime
+
+import java.time.format.DateTimeFormatter
 
 class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHolder>
     (MessageDiffCallback()) {
@@ -58,10 +56,60 @@ class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHol
         private val messageTextView: TextView = itemView.findViewById(R.id.txtMessage)
         private val timeTextView: TextView = itemView.findViewById(R.id.txtTime)
         private val nameTextView: TextView = itemView.findViewById(R.id.txtName)
+
         fun bind(message: MessageModel) {
-            messageTextView.text=message.message
-            timeTextView.text=message.messageTime
-            nameTextView.text=message.messageSender
+
+            if (message.messagePreviousTime!="null" && message.messagePreviousTime.length>0 ){
+                var  messageTime = message.messageTime.substring(11)
+                var  messagePreviousTime = message.messagePreviousTime.substring(11)
+
+                var  messageTime2 = LocalTime.now()
+                var  messagePreviousTime2=LocalTime.now()
+
+                 messageTime2=LocalTime.parse(messageTime)
+                 messagePreviousTime2=LocalTime.parse(messagePreviousTime)
+
+                if (message.messageSender==message.messagePreviousSender){
+                    if (messagePreviousTime2.plusMinutes(10)<=messageTime2){
+                        timeTextView.visibility=View.VISIBLE
+                        nameTextView.visibility=View.GONE
+                        messageTextView.text=message.message
+                        timeTextView.text=message.messageTime
+                        nameTextView.text=message.messageSender
+                    }
+                    else{
+                        timeTextView.visibility=View.GONE
+                        nameTextView.visibility=View.GONE
+                        messageTextView.text=message.message
+                        timeTextView.text=message.messageTime
+                        nameTextView.text=message.messageSender
+                    }
+                }
+                else{
+                    if (messagePreviousTime2.plusMinutes(10)<=messageTime2){
+                        timeTextView.visibility=View.VISIBLE
+                        nameTextView.visibility=View.VISIBLE
+                        messageTextView.text=message.message
+                        timeTextView.text=message.messageTime
+                        nameTextView.text=message.messageSender
+                    }
+                    else{
+                        timeTextView.visibility=View.GONE
+                        nameTextView.visibility=View.VISIBLE
+                        messageTextView.text=message.message
+                        timeTextView.text=message.messageTime
+                        nameTextView.text=message.messageSender
+                    }
+                }
+            }
+            else{
+                timeTextView.visibility=View.VISIBLE
+                nameTextView.visibility=View.VISIBLE
+                messageTextView.text=message.message
+                timeTextView.text=message.messageTime
+                nameTextView.text=message.messageSender
+            }
+
         }
     }
 
