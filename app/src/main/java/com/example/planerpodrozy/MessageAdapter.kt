@@ -59,7 +59,7 @@ class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHol
 
         fun bind(message: MessageModel) {
 
-            if (message.messagePreviousTime!="null" && message.messagePreviousTime.length>0 ){
+            if (message.messagePreviousTime!="null" ){
                 var  messageTime = message.messageTime.substring(11)
                 var  messagePreviousTime = message.messagePreviousTime.substring(11)
 
