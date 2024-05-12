@@ -1,10 +1,12 @@
 package com.example.planerpodrozy
 
 import android.content.Intent
+import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.io.IOException
 
 class EventActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityEventBinding
@@ -100,6 +103,8 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
                         val locationTextView: TextView = findViewById(R.id.textView_location)
                         val dateTextView: TextView = findViewById(R.id.textView_date)
 
+                        geocodeLocation(location)
+
                         eventNameTextView.text = eventName
                         locationTextView.text = location
                         dateTextView.text = date
@@ -121,17 +126,34 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
     }
-    //MAPA GOOGLE
+    //MAPA GOOGLE- do konfiguracji
     override fun onMapReady(googleMap: GoogleMap) {
         myMap = googleMap
         // Tutaj można dodać konfiguracje mapy
 
-        val warsawLatLng = LatLng(52.2297, 21.0122)
 
-        // znacznik na mapę dla Warszawy
-        myMap.addMarker(MarkerOptions().position(warsawLatLng).title("Warszawa"))
+    }
 
-        // przesunięcie kamery na znacznik
-        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(warsawLatLng, 10f))
+    //Geokoduje i dodaje na mapę znacznik
+    private fun geocodeLocation(locationName: String) {
+        val geocoder = Geocoder(this)
+        try {
+            val addresses = geocoder.getFromLocationName(locationName, 1)
+            if (addresses != null && addresses.isNotEmpty()) {
+                val address = addresses[0]
+                val latLng = LatLng(address.latitude, address.longitude)
+                // Dodanie znacznika na mapę
+                myMap.addMarker(MarkerOptions().position(latLng).title(locationName))
+                // Przesunięcie kamery na znacznik
+                myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
+            } else {
+                // Adres nie został znaleziony
+                Toast.makeText(applicationContext, "Adres nie został znaleziony!", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            // Błąd podczas geokodowania
+            Toast.makeText(applicationContext, "Błąd podczas geokodowania!", Toast.LENGTH_SHORT).show()
+        }
     }
 }
