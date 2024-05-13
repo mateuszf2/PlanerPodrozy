@@ -124,6 +124,34 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(intent)
         }
 
+        binding.buttonUpdate.setOnClickListener {
+            if(eventId!=null){
+                eventsCollectionRef.document(eventId)
+                    .get()
+                    .addOnSuccessListener { eventDocument ->
+                        val eventNameTextView: TextView= findViewById(R.id.textView_eventName)
+                        val locationTextView: TextView= findViewById(R.id.textView_location)
+                        val dateTextView: TextView= findViewById(R.id.textView_date)
+
+                        val newEventName= eventNameTextView.text.toString()
+                        val newLocation= locationTextView.text.toString()
+                        val newDate= dateTextView.text.toString()
+
+                        val newEventData= hashMapOf<String, Any>(
+                            "nazwa_wydarzenia" to newEventName,
+                            "lokalizacja" to newLocation,
+                            "data" to newDate
+                        )
+                        eventsCollectionRef.document(eventId).update(newEventData)
+
+                        geocodeLocation(newLocation)
+                    }
+                    .addOnFailureListener { e->
+
+                    }
+            }
+        }
+
 
     }
     //MAPA GOOGLE- do konfiguracji
