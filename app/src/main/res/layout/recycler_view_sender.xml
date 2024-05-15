@@ -4,56 +4,57 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android">
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="6dp"
-    android:background="@drawable/sender_bg"
-    android:elevation="4dp"
-    android:layout_alignParentEnd="true"
-    >
-
-    <TextView
-        android:id="@+id/txtName"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="normal"
-        android:text="name"
-        android:textSize="13sp"
-        android:textColor="@color/black"
-        android:paddingEnd="5dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="visible"
-        />
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_margin="6dp"
+        android:elevation="4dp"
+        android:layout_alignParentEnd="true"
+        >
 
-    <TextView
-        android:id="@+id/txtMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sender_message"
-        android:textStyle="normal"
-        android:textSize="18sp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:inputType="textMultiLine"
-        app:layout_constraintTop_toBottomOf="@id/txtName"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="normal"
+            android:text="name"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:paddingEnd="5dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="visible"
+            />
 
-    <TextView
-        android:id="@+id/txtTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sender_message"
-        android:textStyle="normal"
-        android:textSize="14sp"
-        android:paddingEnd="5dp"
-        app:layout_constraintTop_toBottomOf="@id/txtMessage"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="visible"
-        />
+        <TextView
+            android:id="@+id/txtMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sender_message"
+            android:textStyle="normal"
+            android:background="@drawable/sender_bg"
+            android:textSize="18sp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:inputType="textMultiLine"
+            app:layout_constraintTop_toBottomOf="@id/txtName"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/txtTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sender_time"
+            android:textStyle="normal"
+            android:textSize="14sp"
+            android:paddingEnd="5dp"
+            app:layout_constraintTop_toBottomOf="@id/txtMessage"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="visible"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </RelativeLayout>

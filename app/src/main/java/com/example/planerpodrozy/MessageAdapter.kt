@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.time.LocalDate
 import java.time.LocalTime
 
 import java.time.format.DateTimeFormatter
@@ -19,8 +20,6 @@ class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHol
 
     private var onEventClickListener: OnEventClickListener? = null
 
-
-    private val db= Firebase.firestore
     private val left = 0
     private val right  = 1
 
@@ -60,14 +59,23 @@ class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHol
         fun bind(message: MessageModel) {
 
             if (message.messagePreviousTime!="null" ){
-                var  messageTime = message.messageTime.substring(11)
-                var  messagePreviousTime = message.messagePreviousTime.substring(11)
+                val  messageTime = message.messageTime.substring(11)
+                val  messagePreviousTime = message.messagePreviousTime.substring(11)
 
-                var  messageTime2 = LocalTime.now()
-                var  messagePreviousTime2=LocalTime.now()
+                val  messageTime2 :LocalTime
+                val  messagePreviousTime2: LocalTime
 
-                 messageTime2=LocalTime.parse(messageTime)
-                 messagePreviousTime2=LocalTime.parse(messagePreviousTime)
+                messageTime2=LocalTime.parse(messageTime)
+                messagePreviousTime2=LocalTime.parse(messagePreviousTime)
+
+                val  messageDate = message.messageTime.substring(0,10)
+                val  messagePreviousDate = message.messagePreviousTime.substring(0,10)
+
+                val  messageDate2 :LocalDate
+                val  messagePreviousDate2: LocalDate
+
+                messageDate2=LocalDate.parse(messageDate)
+                messagePreviousDate2=LocalDate.parse(messagePreviousDate)
 
                 if (message.messageSender==message.messagePreviousSender){
                     if (messagePreviousTime2.plusMinutes(10)<=messageTime2){
@@ -78,11 +86,20 @@ class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHol
                         nameTextView.text=message.messageSender
                     }
                     else{
-                        timeTextView.visibility=View.GONE
-                        nameTextView.visibility=View.GONE
-                        messageTextView.text=message.message
-                        timeTextView.text=message.messageTime
-                        nameTextView.text=message.messageSender
+                        if (messagePreviousDate2==messageDate2){
+                            timeTextView.visibility=View.GONE
+                            nameTextView.visibility=View.GONE
+                            messageTextView.text=message.message
+                            timeTextView.text=message.messageTime
+                            nameTextView.text=message.messageSender
+                        }
+                        else{
+                            timeTextView.visibility=View.VISIBLE
+                            nameTextView.visibility=View.GONE
+                            messageTextView.text=message.message
+                            timeTextView.text=message.messageTime
+                            nameTextView.text=message.messageSender
+                        }
                     }
                 }
                 else{
@@ -94,11 +111,20 @@ class MessageAdapter() : ListAdapter<MessageModel, MessageAdapter.MessageViewHol
                         nameTextView.text=message.messageSender
                     }
                     else{
-                        timeTextView.visibility=View.GONE
-                        nameTextView.visibility=View.VISIBLE
-                        messageTextView.text=message.message
-                        timeTextView.text=message.messageTime
-                        nameTextView.text=message.messageSender
+                        if (messagePreviousDate2==messageDate2){
+                            timeTextView.visibility=View.GONE
+                            nameTextView.visibility=View.VISIBLE
+                            messageTextView.text=message.message
+                            timeTextView.text=message.messageTime
+                            nameTextView.text=message.messageSender
+                        }
+                        else{
+                            timeTextView.visibility=View.VISIBLE
+                            nameTextView.visibility=View.VISIBLE
+                            messageTextView.text=message.message
+                            timeTextView.text=message.messageTime
+                            nameTextView.text=message.messageSender
+                        }
                     }
                 }
             }
