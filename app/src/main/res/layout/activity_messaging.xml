@@ -30,7 +30,7 @@
             android:text="email"
             android:paddingTop="10dp"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
     </LinearLayout>
