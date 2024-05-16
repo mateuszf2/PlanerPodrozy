@@ -2,8 +2,11 @@ package com.example.planerpodrozy
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.View.MeasureSpec
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,7 +21,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
-import java.lang.ref.PhantomReference
+
 
 class ProfileActivity: AppCompatActivity() {
     private lateinit var binding:ActivityProfileBinding
@@ -37,6 +40,18 @@ class ProfileActivity: AppCompatActivity() {
         uploadImage(it)
     }
     private val db2=Firebase.firestore
+
+    fun getBitmapFromView(view: View): Bitmap {
+        view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED)
+        val bitmap = Bitmap.createBitmap(
+            view.getMeasuredWidth(), view.getMeasuredHeight(),
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight())
+        view.draw(canvas)
+        return bitmap
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -14,28 +14,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profile_image"
         android:layout_width="185dp"
         android:layout_height="197dp"
         android:layout_marginTop="92dp"
         android:cropToPadding="false"
+        android:scaleType="centerCrop"
         android:src="@drawable/user"
+        android:layout_centerHorizontal="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/buttonBack"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+        />
+
 
     <ImageView
         android:id="@+id/profile_add"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="248dp"
         android:cropToPadding="false"
         android:src="@drawable/add"
+       android:layout_marginTop="250dp"
+        android:layout_marginLeft="70dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.637"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/tv_email"
@@ -43,7 +50,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="332dp"
         android:drawableLeft="@drawable/baseline_account_box_24"
-
         android:drawablePadding="10dp"
         android:padding="20dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
