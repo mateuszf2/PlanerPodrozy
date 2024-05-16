@@ -110,12 +110,19 @@ class FinanseActivity : AppCompatActivity() {
         }
 
         binding.buttonBack.setOnClickListener{
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, EventActivity::class.java)
+            intent.putExtra("eventId", eventId)
             startActivity(intent)
         }
 
         binding.buttonAddFinanse.setOnClickListener {
             val intent= Intent(this, AddFinanseActivity::class.java)
+            intent.putExtra("eventId", eventId)
+            startActivity(intent)
+        }
+
+        binding.buttonSummary.setOnClickListener {
+            val intent= Intent(this, FinanseSummaryActivity::class.java)
             intent.putExtra("eventId", eventId)
             startActivity(intent)
         }

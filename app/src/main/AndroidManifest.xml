@@ -88,6 +88,10 @@
             android:name=".GroupMessagingActivity"
             android:exported="false"
             />
+        <activity
+            android:name=".FinanseSummaryActivity"
+            android:exported="false"
+            />
 
     </application>
 
