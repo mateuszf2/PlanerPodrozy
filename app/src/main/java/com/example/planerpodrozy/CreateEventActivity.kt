@@ -63,13 +63,6 @@ class CreateEventActivity:AppCompatActivity() {
 
     }
     private fun showToast(message: String) {
-        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
-        toast.show()
-
-
-        val czasTrwaniaToast = 2000
-        Handler().postDelayed({
-            toast.cancel()
-        }, czasTrwaniaToast.toLong())
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
