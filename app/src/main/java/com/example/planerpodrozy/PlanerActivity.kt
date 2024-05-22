@@ -31,7 +31,7 @@ class PlanerActivity : AppCompatActivity() {
         binding = ActivityPlanerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        eventId = intent.getStringExtra("eventId")!! //na pewno nie null
+        eventId = intent.getStringExtra("eventId")!!
         val db = Firebase.firestore
         val currentUser = FirebaseAuth.getInstance().currentUser
         val userId = currentUser?.uid
@@ -60,8 +60,8 @@ class PlanerActivity : AppCompatActivity() {
                         val time = timeFormat.parse(planerHour)
 
                         val planer = Planer(
-                            dateFormat.format(date), // Formatowanie daty z powrotem do "dd/MM/yyyy"
-                            timeFormat.format(time), // Formatowanie godziny z powrotem do "HH:mm"
+                            dateFormat.format(date),
+                            timeFormat.format(time),
                             planerName
                         )
 

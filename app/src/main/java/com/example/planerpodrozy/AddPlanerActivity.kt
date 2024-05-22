@@ -108,9 +108,9 @@ class AddPlanerActivity : AppCompatActivity() {
         }
     }
     private fun resetFields() {
-        binding.dataplaner.text = "Wybierz datę" // Resetuje pole daty
-        binding.godzinawydarzenia.text = "Wybierz godzinę" // Resetuje pole godziny
-        binding.nazwaplaner.setText("") // Czyści pole nazwy aktywności
+        binding.dataplaner.text = "Wybierz datę"
+        binding.godzinawydarzenia.text = "Wybierz godzinę"
+        binding.nazwaplaner.setText("")
     }
     private fun showToast(message: String) {
         val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
