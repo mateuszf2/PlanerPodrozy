@@ -38,25 +38,27 @@ class FinanseSummaryActivity :AppCompatActivity() {
 
         fun fetchFriends(){
             val friendsList = mutableListOf<Bilans>()
-            db.collection("bilans")
-                .where(Filter.equalTo("friendId",userId))
-                .get()
-                .addOnSuccessListener(){ documents->
-                    if(documents!=null) {
-                        for (document in documents!!) {
-                            val friend =Bilans(
-                                document.get("friendId").toString(),
-                                document.get("totalBilans").toString(),
-                                document.get("userId").toString()
-                            )
-                            if (friend != null) {
-                                friendsList.add(friend)
+            if(eventId!=null){
+                db.collection("bilans").document(eventId).collection("bilansPairs")
+                    .where(Filter.equalTo("friendId",userId))
+                    .get()
+                    .addOnSuccessListener(){ documents->
+                        if(documents!=null) {
+                            for (document in documents) {
+                                val friend =Bilans(
+                                    document.get("friendId").toString(),
+                                    document.get("totalBilans").toString(),
+                                    document.get("userId").toString()
+                                )
+                                if (friend != null) {
+                                    friendsList.add(friend)
+                                }
                             }
-                        }
 
+                        }
+                        finanseSummaryAdapter.submitList(friendsList)
                     }
-                    finanseSummaryAdapter.submitList(friendsList)
-                }
+            }
         }
 
         fetchFriends()

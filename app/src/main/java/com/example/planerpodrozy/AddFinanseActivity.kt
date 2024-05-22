@@ -48,7 +48,7 @@ class AddFinanseActivity: AppCompatActivity() {
                         .add(finanseData)
                         .addOnSuccessListener {
                             db.collection("wydarzenia")
-                                .document(eventId!!)
+                                .document(eventId)
                                 .get()
                                 .addOnSuccessListener { document->
                                     resetFields()
@@ -64,19 +64,19 @@ class AddFinanseActivity: AppCompatActivity() {
                                             for(userDoc in usersDocs){
                                                 val docUserId= userDoc.getString("userId") //user aktualnie przetwarzanego członka wydarzenia
                                                 if(docUserId!=userId){ //nie potrzebny nam nasz user bo nie jesteśmy sami sobie winni pieniędzy
-                                                    db.collection("bilans") // tworzenie tabel bilansu dla każdej pary użytkowników
+                                                    db.collection("bilans").document(eventId).collection("bilansPairs") // tworzenie tabel bilansu dla każdej pary użytkowników
                                                         .whereEqualTo("userId",userId)
                                                         .whereEqualTo("friendId", docUserId)
                                                         .get()
-                                                        .addOnSuccessListener { bilansDocs ->
+                                                        .addOnSuccessListener { bilansDocsUD ->
                                                             Log.i(TAG, "INFOSTO")
-                                                            if(bilansDocs.isEmpty){
+                                                            if(bilansDocsUD.isEmpty){
                                                                 val newBilansData= hashMapOf(
                                                                     "userId" to userId,
                                                                     "friendId" to docUserId,
                                                                     "totalBilans" to dividedAmount
                                                                 )
-                                                                db.collection("bilans")
+                                                                db.collection("bilans").document(eventId).collection("bilansPairs")
                                                                     .add(newBilansData)
                                                                     .addOnSuccessListener { documents->
 
@@ -86,13 +86,13 @@ class AddFinanseActivity: AppCompatActivity() {
                                                                     }
                                                             }
                                                             else{
-                                                                for(bilansDoc in bilansDocs){ //mimo, że wiem że powinien znaleźć się tylko jeden dokument to i tak trzeba użyć fora, nawet jeśli będzie to tylko jedno wykonanie pętli
+                                                                for(bilansDoc in bilansDocsUD){ //mimo, że wiem że powinien znaleźć się tylko jeden dokument to i tak trzeba użyć fora, nawet jeśli będzie to tylko jedno wykonanie pętli
                                                                     var currentBilans= bilansDoc.getDouble("totalBilans") ?: 0.0
                                                                     currentBilans+=dividedAmount
                                                                     val newBilansData= hashMapOf<String, Any>(
                                                                         "totalBilans" to currentBilans
                                                                     )
-                                                                    db.collection("bilans").document(bilansDoc.id).update(newBilansData)
+                                                                    db.collection("bilans").document(eventId).collection("bilansPairs").document(bilansDoc.id).update(newBilansData)
                                                                         .addOnSuccessListener { documents->
                                                                             //Aktualizacja zakończona sukcesem
                                                                         }
@@ -101,18 +101,18 @@ class AddFinanseActivity: AppCompatActivity() {
                                                                         }
                                                                 }
                                                             }
-                                                            db.collection("bilans")
+                                                            db.collection("bilans").document(eventId).collection("bilansPairs")
                                                                 .whereEqualTo("userId", docUserId)
                                                                 .whereEqualTo("friendId", userId)
                                                                 .get()
-                                                                .addOnSuccessListener { bilansDocs ->
-                                                                    if(bilansDocs.isEmpty){
+                                                                .addOnSuccessListener { bilansDocsDU ->
+                                                                    if(bilansDocsDU.isEmpty){
                                                                         val newBilansData= hashMapOf(
                                                                             "userId" to docUserId,
                                                                             "friendId" to userId,
                                                                             "totalBilans" to -dividedAmount
                                                                         )
-                                                                        db.collection("bilans")
+                                                                        db.collection("bilans").document(eventId).collection("bilansPairs")
                                                                             .add(newBilansData)
                                                                             .addOnSuccessListener { documents->
 
@@ -122,13 +122,13 @@ class AddFinanseActivity: AppCompatActivity() {
                                                                             }
                                                                     }
                                                                     else{
-                                                                        for(bilansDoc in bilansDocs){ //mimo, że wiem że powinien znaleźć się tylko jeden dokument to i tak trzeba użyć fora, nawet jeśli będzie to tylko jedno wykonanie pętli
+                                                                        for(bilansDoc in bilansDocsDU){ //mimo, że wiem że powinien znaleźć się tylko jeden dokument to i tak trzeba użyć fora, nawet jeśli będzie to tylko jedno wykonanie pętli
                                                                             var currentBilans= bilansDoc.getDouble("totalBilans") ?: 0.0
                                                                             currentBilans-=dividedAmount
                                                                             val newBilansData= hashMapOf<String, Any>(
                                                                                 "totalBilans" to currentBilans
                                                                             )
-                                                                            db.collection("bilans").document(bilansDoc.id).update(newBilansData)
+                                                                            db.collection("bilans").document(eventId).collection("bilansPairs").document(bilansDoc.id).update(newBilansData)
                                                                         }
                                                                     }
                                                                 }
@@ -160,7 +160,7 @@ class AddFinanseActivity: AppCompatActivity() {
         }
     }
     private fun resetFields() {
-        binding.finanseNameText.setText("Budget name")
-        binding.amountNumber.setText("Amount of money")
+        binding.finanseNameText.setText("")
+        binding.amountNumber.setText("")
     }
 }

@@ -87,6 +87,7 @@ class InvitationsActivity : AppCompatActivity(), InvitationAdapter.OnEventClickL
         val db = Firebase.firestore
         val currentUser = FirebaseAuth.getInstance().currentUser
         val userId = currentUser?.uid
+        val userEmail= currentUser?.email
 
         if(userId != null) {
             val wydarzenieUzytkownik= hashMapOf(
@@ -106,6 +107,7 @@ class InvitationsActivity : AppCompatActivity(), InvitationAdapter.OnEventClickL
 
                     db.collection("zaproszenia")
                         .whereEqualTo("eventId", event.eventId)
+                        .whereEqualTo("friendEmail", userEmail)
                         .get()
                         .addOnSuccessListener { documents ->
                             for(invitationDocument in documents) {
