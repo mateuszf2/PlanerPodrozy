@@ -4,11 +4,15 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.planerpodrozy.databinding.ActivityAddPlanerBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import java.util.*
 
 class AddPlanerActivity : AppCompatActivity() {
@@ -20,7 +24,7 @@ class AddPlanerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val eventId = intent.getStringExtra("eventId")
-        val db = FirebaseFirestore.getInstance()
+        val db = Firebase.firestore
         val currentUser = FirebaseAuth.getInstance().currentUser
         val userId = currentUser?.uid
 
@@ -71,8 +75,10 @@ class AddPlanerActivity : AppCompatActivity() {
             val planerdata = binding.dataplaner.text.toString()
             val planergodzina = binding.godzinawydarzenia.text.toString()
             val planernazwa = binding.nazwaplaner.text.toString()
+            Log.e("AddPlanerActivity", "Kliknieto dodaj")
 
             if (eventId != null && userId != null && planerdata.isNotEmpty() && planergodzina.isNotEmpty() && planernazwa.isNotEmpty()) {
+                Log.e("AddPlanerActivity", "Wchodzi do ifa")
                 val planerData = hashMapOf(
                     "eventId" to eventId,
                     "PlanerData" to planerdata,
@@ -82,11 +88,37 @@ class AddPlanerActivity : AppCompatActivity() {
 
                 db.collection("planer")
                     .add(planerData)
-                    .addOnSuccessListener { document ->
+                    .addOnSuccessListener { documentReference ->
+                        Log.e("AddPlanerActivity", "Sukcesss")
+
+                        showToast("Pomyślnie dodano aktywność!")
+                        resetFields()
                     }
                     .addOnFailureListener { e ->
+                        Log.e("AddPlanerActivity", "Niesukcess")
+
+                        showToast("Błąd podczas dodawania aktywności: ${e.message}")
                     }
+            } else {
+                showToast("Wprowadź wszystkie dane!")
+                Log.e("AddPlanerActivity", "Nie ma danych")
+
             }
+
         }
     }
+    private fun resetFields() {
+        binding.dataplaner.text = "Wybierz datę" // Resetuje pole daty
+        binding.godzinawydarzenia.text = "Wybierz godzinę" // Resetuje pole godziny
+        binding.nazwaplaner.setText("") // Czyści pole nazwy aktywności
+    }
+    private fun showToast(message: String) {
+        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        toast.show()
+        val czasTrwaniaToast = 2000
+        Handler().postDelayed({
+            toast.cancel()
+        }, czasTrwaniaToast.toLong())
+    }
+
 }

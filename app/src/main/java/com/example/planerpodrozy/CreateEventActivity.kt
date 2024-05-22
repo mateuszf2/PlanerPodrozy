@@ -48,7 +48,11 @@ class CreateEventActivity:AppCompatActivity() {
                             "userId" to userId
                         )
                         eventsUsersCollectionRef.add(eventsUsersData)
-                            .addOnSuccessListener {showToast("Pomyślnie utworzono wydarzenie")}
+                            .addOnSuccessListener {showToast("Pomyślnie utworzono wydarzenie")
+                                binding.eventNameText.setText("Event name")
+                                binding.locationText.setText("Location")
+                                binding.editTextDate.setText("Date")
+                            }
                             .addOnFailureListener {showToast("Nie udało się utworzyć wydarzenia")}
                     }
                     .addOnFailureListener { e ->

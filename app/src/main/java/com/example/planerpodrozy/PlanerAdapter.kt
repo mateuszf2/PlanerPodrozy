@@ -1,3 +1,4 @@
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,4 +41,10 @@ class PlanerAdapter : ListAdapter<Planer, PlanerAdapter.PlanerViewHolder>(Planer
             return oldItem == newItem
         }
     }
+
+    fun submitSortedData(data: List<Planer>) {
+        val sortedData = data.sortedWith(compareBy({ it.data }, { it.godzina }))
+        super.submitList(sortedData)
+    }
 }
+

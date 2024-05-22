@@ -3,8 +3,10 @@ package com.example.planerpodrozy
 import PlanerAdapter
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +16,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class PlanerActivity : AppCompatActivity() {
     private lateinit var eventId: String
@@ -42,16 +46,28 @@ class PlanerActivity : AppCompatActivity() {
                 .whereEqualTo("eventId", eventId)
                 .get()
                 .addOnSuccessListener { documents->
-                    val planerList= mutableListOf<Planer>()
-                    for(document in documents){
-                        val planerName= document.getString("PlanerNazwa")
-                        val planerData= document.getString("PlanerData")
-                        val planerHour= document.getString("PlanerGodzina")
-                        val planer= Planer(planerData!!, planerHour!!, planerName!!)
+                    val planerList = mutableListOf<Planer>()
+                    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+
+                    for (document in documents) {
+                        val planerName = document.getString("PlanerNazwa") ?: ""
+                        val planerData = document.getString("PlanerData") ?: ""
+                        val planerHour = document.getString("PlanerGodzina") ?: ""
+
+                        // Parsowanie daty i godziny
+                        val date = dateFormat.parse(planerData)
+                        val time = timeFormat.parse(planerHour)
+
+                        val planer = Planer(
+                            dateFormat.format(date), // Formatowanie daty z powrotem do "dd/MM/yyyy"
+                            timeFormat.format(time), // Formatowanie godziny z powrotem do "HH:mm"
+                            planerName
+                        )
 
                         planerList.add(planer)
-
                     }
+                    planerList.sortWith(compareBy({ it.data }, { it.godzina }))
                     planerAdapter.submitList(planerList)
                 }
                 .addOnFailureListener { e->
@@ -59,7 +75,9 @@ class PlanerActivity : AppCompatActivity() {
                 }
         }
 
-
+        val listaAktywnosci: List<Planer> = mutableListOf()
+        planerAdapter.submitSortedData(listaAktywnosci)
+        planerRecyclerView.adapter = planerAdapter
 
 
         val menuRecyclerView= binding.recyclerViewMenuBar
@@ -105,6 +123,7 @@ class PlanerActivity : AppCompatActivity() {
         }
 
     }
+
 
 
 

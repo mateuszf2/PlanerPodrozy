@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.planerpodrozy.databinding.ActivityAddFinanseBinding
 import com.google.firebase.Firebase
@@ -50,6 +51,8 @@ class AddFinanseActivity: AppCompatActivity() {
                                 .document(eventId!!)
                                 .get()
                                 .addOnSuccessListener { document->
+                                    resetFields()
+                                    Toast.makeText(this, "Pomyślnie dodano finanse", Toast.LENGTH_SHORT).show()
                                     var usersNumber= document?.data?.get("usersNumber").toString().toInt()
 
                                     val dividedAmount= amountFinanse.toFloat()/usersNumber //podzielona kwota stworzonej składki przez ilość członków, po ile każdy się składa
@@ -155,5 +158,9 @@ class AddFinanseActivity: AppCompatActivity() {
                 }
             }
         }
+    }
+    private fun resetFields() {
+        binding.finanseNameText.setText("Budget name")
+        binding.amountNumber.setText("Amount of money")
     }
 }
