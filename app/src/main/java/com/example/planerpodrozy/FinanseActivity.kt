@@ -31,7 +31,7 @@ class FinanseActivity : AppCompatActivity() {
         var sumUser: Double = 0.0
 
         finanseRecyclerView= binding.recyclerViewFinanse
-        finanseAdapter= FinanseAdapter(::payFinanse)
+        finanseAdapter= FinanseAdapter()
         finanseRecyclerView.adapter= finanseAdapter
         finanseRecyclerView.layoutManager= LinearLayoutManager(this)
 
@@ -129,10 +129,4 @@ class FinanseActivity : AppCompatActivity() {
 
     }
 
-    private fun payFinanse(finanse: Finanse){
-        val intent= Intent(this, PayFinanseActivity::class.java)
-        intent.putExtra("finanseId", finanse.finanseId)
-        intent.putExtra("eventId", eventId)
-        startActivity(intent)
-    }
 }

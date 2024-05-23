@@ -70,6 +70,12 @@ class FinanseSummaryActivity :AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.buttonMakePayment.setOnClickListener {
+            val intent= Intent(this, PayFriendActivity::class.java)
+            intent.putExtra("eventId", eventId)
+            startActivity(intent)
+        }
+
     }
 
 }

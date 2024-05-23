@@ -13,7 +13,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 
-class FinanseAdapter(private val onPayClickListener: (Finanse) -> Unit) : ListAdapter<Finanse, FinanseAdapter.FinanseViewHolder>(FinanseDiffCallback()) {
+class FinanseAdapter: ListAdapter<Finanse, FinanseAdapter.FinanseViewHolder>(FinanseDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FinanseViewHolder {
         val itemView= LayoutInflater.from(parent.context).inflate(R.layout.item_finanse, parent, false)
@@ -29,7 +29,6 @@ class FinanseAdapter(private val onPayClickListener: (Finanse) -> Unit) : ListAd
         private val userFinanse: TextView = itemView.findViewById(R.id.textView_userFinanse)
         private val amountFinanse: TextView= itemView.findViewById(R.id.textView_amountFinanse)
         private val amountMinusPayment: TextView= itemView.findViewById(R.id.textView_amountMinusPayment)
-        private val payButton: Button = itemView.findViewById(R.id.buttonPay)
         private val db= Firebase.firestore
 
         fun bind(finanse: Finanse) {
@@ -74,9 +73,6 @@ class FinanseAdapter(private val onPayClickListener: (Finanse) -> Unit) : ListAd
                 }
 
 
-            payButton.setOnClickListener {
-                onPayClickListener.invoke(finanse);
-            }
 
         }
     }

@@ -89,6 +89,10 @@
             android:exported="false"
             />
         <activity
+            android:name=".PayFriendActivity"
+            android:exported="false"
+            />
+        <activity
             android:name=".FinanseSummaryActivity"
             android:exported="false"
             />
