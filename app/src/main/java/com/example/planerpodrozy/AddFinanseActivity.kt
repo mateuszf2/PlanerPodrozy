@@ -25,8 +25,6 @@ class AddFinanseActivity: AppCompatActivity() {
         val userId= currentUser?.uid
 
 
-
-
         binding.buttonBack.setOnClickListener{
             intent= Intent(this, FinanseActivity::class.java)
             intent.putExtra("eventId", eventId)
@@ -41,7 +39,7 @@ class AddFinanseActivity: AppCompatActivity() {
                     val finanseData= hashMapOf(
                         "eventId" to eventId,
                         "finanseName" to finanseName,
-                        "amountFinanse" to amountFinanse,
+                        "amountFinanse" to amountFinanse.toDouble(),
                         "userId" to userId
                     )
                     db.collection("finanse")

@@ -96,6 +96,10 @@
             android:name=".FinanseSummaryActivity"
             android:exported="false"
             />
+        <activity
+            android:name=".EditFinanseActivity"
+            android:exported="false"
+            />
 
     </application>
 

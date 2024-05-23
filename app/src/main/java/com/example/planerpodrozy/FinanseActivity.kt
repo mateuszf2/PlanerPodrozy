@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.planerpodrozy.databinding.ActivityFinanseBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.firestore
 
-class FinanseActivity : AppCompatActivity() {
+class FinanseActivity : AppCompatActivity(),FinanseAdapter.OnEventClickListener {
     private lateinit var binding: ActivityFinanseBinding
     private lateinit var finanseRecyclerView: RecyclerView
     private lateinit var finanseAdapter: FinanseAdapter
@@ -31,7 +33,7 @@ class FinanseActivity : AppCompatActivity() {
         var sumUser: Double = 0.0
 
         finanseRecyclerView= binding.recyclerViewFinanse
-        finanseAdapter= FinanseAdapter()
+        finanseAdapter= FinanseAdapter(this)
         finanseRecyclerView.adapter= finanseAdapter
         finanseRecyclerView.layoutManager= LinearLayoutManager(this)
 
@@ -44,7 +46,7 @@ class FinanseActivity : AppCompatActivity() {
                     for(document in documents){
                         val finanseId= document.id
                         val finanseName= document.getString("finanseName")
-                        val amountFinanse= document.getString("amountFinanse")
+                        val amountFinanse= document.getDouble("amountFinanse")
                         val userIdFinanse= document.getString("userId")
                         val finanse= Finanse(amountFinanse!!.toDouble(), eventId, finanseId, finanseName.toString(), userIdFinanse.toString())
 
@@ -127,6 +129,22 @@ class FinanseActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
     }
+
+    override fun onFinanseEdit(amountFinanse:String,eventId : String, finanseName:String,userId:String,finanseId:String){
+        val intent= Intent(this, EditFinanseActivity::class.java)
+        intent.putExtra("amountFinanse", amountFinanse)
+        intent.putExtra("eventId", eventId)
+        intent.putExtra("finanseName", finanseName)
+        intent.putExtra("userId", userId)
+        intent.putExtra("finanseId", finanseId)
+        startActivity(intent)
+    }
+    override fun onFinanseDelete(){
+
+    }
+
+
 
 }

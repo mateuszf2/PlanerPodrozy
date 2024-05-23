@@ -13,7 +13,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 
-class FinanseAdapter: ListAdapter<Finanse, FinanseAdapter.FinanseViewHolder>(FinanseDiffCallback()) {
+class FinanseAdapter(private val listener: OnEventClickListener): ListAdapter<Finanse, FinanseAdapter.FinanseViewHolder>(FinanseDiffCallback()) {
+    private var onEventClickListener: FinanseAdapter.OnEventClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FinanseViewHolder {
         val itemView= LayoutInflater.from(parent.context).inflate(R.layout.item_finanse, parent, false)
@@ -28,8 +29,12 @@ class FinanseAdapter: ListAdapter<Finanse, FinanseAdapter.FinanseViewHolder>(Fin
         private val finanseName: TextView = itemView.findViewById(R.id.textView_finanseName)
         private val userFinanse: TextView = itemView.findViewById(R.id.textView_userFinanse)
         private val amountFinanse: TextView= itemView.findViewById(R.id.textView_amountFinanse)
-        private val amountMinusPayment: TextView= itemView.findViewById(R.id.textView_amountMinusPayment)
+        private val amountDisplay: TextView= itemView.findViewById(R.id.textView_amountDisplay)
         private val db= Firebase.firestore
+
+        private val buttonEdit: Button = itemView.findViewById(R.id.buttonEdit)
+        private val buttonDelete: Button = itemView.findViewById(R.id.buttonDelete)
+
 
         fun bind(finanse: Finanse) {
             finanseName.text= finanse.finanseName
@@ -41,15 +46,18 @@ class FinanseAdapter: ListAdapter<Finanse, FinanseAdapter.FinanseViewHolder>(Fin
                         userFinanse.text= userEmail.getString("userEmail")
                     }
                 }
-            amountFinanse.text= "Całkowita kwota składki: ${finanse.amountFinanse.toString()}"
+            if (finanse.amountFinanse.toString().contains('.')){
+                val help =finanse.amountFinanse.toString().substring(0,finanse.amountFinanse.toString().indexOf('.'))
+                amountFinanse.text= "Całkowita kwota składki: ${help} zł"
+            }
+
 
             var usersCount: Int
-            var amountLeft: Double
             db.collection("wydarzenia").document(finanse.eventId)
                 .get()
                 .addOnSuccessListener { usersNumberDoc->
                     usersCount= usersNumberDoc.data?.get("usersNumber").toString().toInt()
-                    amountLeft= finanse.amountFinanse/usersCount
+                    val amountPerUser= (finanse.amountFinanse/usersCount).toString()
 
                     val currentUser= FirebaseAuth.getInstance().currentUser
                     val userId= currentUser?.uid
@@ -59,10 +67,15 @@ class FinanseAdapter: ListAdapter<Finanse, FinanseAdapter.FinanseViewHolder>(Fin
                         .whereEqualTo("userId", userId)
                         .get()
                         .addOnSuccessListener { paymentDocuments ->
-                            for(pd in paymentDocuments){
-                                amountLeft-= pd.getString("amountPay")!!.toDouble()
+                            if (amountPerUser.substring(amountPerUser.indexOf('.',0)+1).length>2){
+                                var sub1 = amountPerUser.substring(0,amountPerUser.indexOf('.',0)+1)
+                                var sub2 = amountPerUser.substring(amountPerUser.indexOf('.',0)+1).take(2)
+                                var help = sub1+sub2+" zł"
+                                amountDisplay.text= "Kwota na osobe: ${help}"
                             }
-                            amountMinusPayment.text= "Musisz jeszcze zapłacić: ${amountLeft.toString()}"
+                            else{
+                                amountDisplay.text= "Kwota na osobe: ${amountPerUser} zł"
+                            }
                         }
                         .addOnFailureListener { e->
 
@@ -73,8 +86,18 @@ class FinanseAdapter: ListAdapter<Finanse, FinanseAdapter.FinanseViewHolder>(Fin
                 }
 
 
+            buttonEdit.setOnClickListener {
+                listener.onFinanseEdit(finanse.amountFinanse.toString(),finanse.eventId,
+                    finanse.finanseName,finanse.userId,finanse.finanseId)
+            }
+
+            buttonDelete.setOnClickListener {
+                listener.onFinanseDelete()
+            }
 
         }
+
+
     }
 
     class FinanseDiffCallback : DiffUtil.ItemCallback<Finanse>() {
@@ -87,4 +110,13 @@ class FinanseAdapter: ListAdapter<Finanse, FinanseAdapter.FinanseViewHolder>(Fin
             return oldItem==newItem
         }
     }
+
+
+    interface OnEventClickListener{
+        fun onFinanseEdit(amountFinanse:String,eventId : String, finanseName:String,userId:String,finanseId:String)
+        fun onFinanseDelete()
+    }
+
+
+
 }

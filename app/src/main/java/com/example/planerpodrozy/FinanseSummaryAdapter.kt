@@ -38,8 +38,15 @@ class FinanseSummaryAdapter() : ListAdapter<Bilans, FinanseSummaryAdapter.Finans
                     for(userEmail in userEmails){
                         friendName.text= userEmail.getString("userEmail")
                     }
+                    if (bilans.totalBilans.substring(bilans.totalBilans.indexOf('.',0)+1).length>2){
+                        var sub1 = bilans.totalBilans.substring(0,bilans.totalBilans.indexOf('.',0)+1)
+                        var sub2 = bilans.totalBilans.substring(bilans.totalBilans.indexOf('.',0)+1).take(2)
+                        money.text=sub1+sub2+" zł"
+                    }
+                    else{
+                        money.text=bilans.totalBilans
+                    }
                 }
-            money.text=bilans.totalBilans
         }
     }
 
