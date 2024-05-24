@@ -40,15 +40,37 @@ class FinanseSummaryAdapter() : ListAdapter<Bilans, FinanseSummaryAdapter.Finans
                         friendName.text= userEmail.getString("userEmail")
                     }
 
-                    if (bilans.totalBilans.substring(0,5)=="-0.00") money.text="0.00 zł"
-                    else if (bilans.totalBilans.substring(bilans.totalBilans.indexOf('.',0)+1).length>2){
-                        var sub1 = bilans.totalBilans.substring(0,bilans.totalBilans.indexOf('.',0)+1)
-                        var sub2 = bilans.totalBilans.substring(bilans.totalBilans.indexOf('.',0)+1).take(2)
-                        money.text=sub1+sub2+" zł"
+                    if (bilans.totalBilans.contains(',')){
+                        if (bilans.totalBilans.substring(0,5)=="-0,00") money.text="0.00 zł"
+                        else if (bilans.totalBilans.substring(bilans.totalBilans.indexOf(',',0)+1).length>2){
+                            var sub1 = bilans.totalBilans.substring(0,bilans.totalBilans.indexOf(',',0)+1)
+                            var sub2 = bilans.totalBilans.substring(bilans.totalBilans.indexOf(',',0)+1).take(2)
+                            money.text=sub1+sub2+" zł"
+
+                            //magicznym trafem na telefonie pobiera z bazy z przecinkiem anizeli z kropka;))
+                            Log.d("TOTAL",bilans.totalBilans)
+
+                        }
+                        else{
+                            money.text=bilans.totalBilans
+                        }
                     }
                     else{
-                        money.text=bilans.totalBilans
+                        if (bilans.totalBilans.substring(0,5)=="-0.00") money.text="0.00 zł"
+                        else if (bilans.totalBilans.substring(bilans.totalBilans.indexOf('.',0)+1).length>2){
+                            var sub1 = bilans.totalBilans.substring(0,bilans.totalBilans.indexOf('.',0)+1)
+                            var sub2 = bilans.totalBilans.substring(bilans.totalBilans.indexOf('.',0)+1).take(2)
+                            money.text=sub1+sub2+" zł"
+
+                            //magicznym trafem na telefonie pobiera z bazy z przecinkiem anizeli z kropka;))
+                            Log.d("TOTAL",bilans.totalBilans)
+
+                        }
+                        else{
+                            money.text=bilans.totalBilans
+                        }
                     }
+
                 }
         }
     }
