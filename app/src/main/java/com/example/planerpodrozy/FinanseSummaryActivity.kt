@@ -25,6 +25,7 @@ class FinanseSummaryActivity :AppCompatActivity() {
         binding= ActivityFinanseSummaryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         val db= Firebase.firestore
         val currentUser= FirebaseAuth.getInstance().currentUser
         val userId= currentUser?.uid
