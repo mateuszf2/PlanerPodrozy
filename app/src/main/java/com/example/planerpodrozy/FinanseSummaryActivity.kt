@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
+import java.text.DecimalFormat
 
 class FinanseSummaryActivity :AppCompatActivity() {
     private lateinit var binding: ActivityFinanseSummaryBinding
@@ -47,7 +48,7 @@ class FinanseSummaryActivity :AppCompatActivity() {
                             for (document in documents) {
                                 val friend =Bilans(
                                     document.get("friendId").toString(),
-                                    document.get("totalBilans").toString(),
+                                    String.format("%.10f",document.get("totalBilans")),
                                     document.get("userId").toString()
                                 )
                                 if (friend != null) {

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,9 @@ class FinanseAdapter(private val listener: OnEventClickListener): ListAdapter<Fi
 
         private val buttonEdit: Button = itemView.findViewById(R.id.buttonEdit)
         private val buttonDelete: Button = itemView.findViewById(R.id.buttonDelete)
+
+        val currentUser= FirebaseAuth.getInstance().currentUser
+        val userId= currentUser?.uid
 
 
         fun bind(finanse: Finanse) {
@@ -87,12 +91,24 @@ class FinanseAdapter(private val listener: OnEventClickListener): ListAdapter<Fi
 
 
             buttonEdit.setOnClickListener {
-                listener.onFinanseEdit(finanse.amountFinanse.toString(),finanse.eventId,
-                    finanse.finanseName,finanse.userId,finanse.finanseId)
+                if (userId!=finanse.userId){
+                    Toast.makeText(itemView.context, "Nie jesteś stwórcą składki!", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    listener.onFinanseEdit(finanse.amountFinanse.toString(),finanse.eventId,
+                        finanse.finanseName,finanse.userId,finanse.finanseId)
+                }
+
             }
 
             buttonDelete.setOnClickListener {
-                listener.onFinanseDelete()
+                if (userId!=finanse.userId){
+                    Toast.makeText(itemView.context, "Nie jesteś stwórcą składki!", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    listener.onFinanseDelete(finanse.amountFinanse.toString(),finanse.eventId,
+                        finanse.finanseName,finanse.userId,finanse.finanseId)
+                }
             }
 
         }
@@ -114,7 +130,7 @@ class FinanseAdapter(private val listener: OnEventClickListener): ListAdapter<Fi
 
     interface OnEventClickListener{
         fun onFinanseEdit(amountFinanse:String,eventId : String, finanseName:String,userId:String,finanseId:String)
-        fun onFinanseDelete()
+        fun onFinanseDelete(amountFinanse:String,eventId : String, finanseName:String,userId:String,finanseId:String)
     }
 
 

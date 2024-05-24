@@ -1,6 +1,7 @@
 package com.example.planerpodrozy
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +39,9 @@ class FinanseSummaryAdapter() : ListAdapter<Bilans, FinanseSummaryAdapter.Finans
                     for(userEmail in userEmails){
                         friendName.text= userEmail.getString("userEmail")
                     }
-                    if (bilans.totalBilans.substring(bilans.totalBilans.indexOf('.',0)+1).length>2){
+
+                    if (bilans.totalBilans.substring(0,5)=="-0.00") money.text="0.00 zł"
+                    else if (bilans.totalBilans.substring(bilans.totalBilans.indexOf('.',0)+1).length>2){
                         var sub1 = bilans.totalBilans.substring(0,bilans.totalBilans.indexOf('.',0)+1)
                         var sub2 = bilans.totalBilans.substring(bilans.totalBilans.indexOf('.',0)+1).take(2)
                         money.text=sub1+sub2+" zł"

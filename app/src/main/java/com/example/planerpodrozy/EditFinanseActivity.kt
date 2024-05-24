@@ -6,13 +6,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.planerpodrozy.databinding.ActivityAddFinanseBinding
 import com.example.planerpodrozy.databinding.ActivityEditFinanseBinding
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Filter
-
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.delay
 
 class EditFinanseActivity:AppCompatActivity() {
 
@@ -152,12 +151,13 @@ class EditFinanseActivity:AppCompatActivity() {
                     }
 
 
-
-
-
-
                 }
             }
+
+            Thread.sleep(500)
+            val intent= Intent(this, FinanseActivity::class.java)
+            intent.putExtra("eventId", eventId)
+            startActivity(intent)
         }
 
 

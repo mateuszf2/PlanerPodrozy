@@ -52,7 +52,7 @@ class FinanseActivity : AppCompatActivity(),FinanseAdapter.OnEventClickListener 
 
                         finanseList.add(finanse)
                         sumAll+= amountFinanse.toDouble() //sumuje wszystkie składki dla tego wydarzenia
-                        binding.textViewSumAll.text= "Suma składek\n${sumAll.toString()}" //wyświetla sumę wszystkich składek tego wydarzenia
+                        binding.textViewSumAll.text= "Suma składek\n${sumAll.toString()} zł" //wyświetla sumę wszystkich składek tego wydarzenia
                     }
                     finanseAdapter.submitList(finanseList)
                 }
@@ -141,8 +141,14 @@ class FinanseActivity : AppCompatActivity(),FinanseAdapter.OnEventClickListener 
         intent.putExtra("finanseId", finanseId)
         startActivity(intent)
     }
-    override fun onFinanseDelete(){
-
+    override fun onFinanseDelete(amountFinanse:String,eventId : String, finanseName:String,userId:String,finanseId:String){
+        val intent= Intent(this, DeleteFinanseActivity::class.java)
+        intent.putExtra("amountFinanse", amountFinanse)
+        intent.putExtra("eventId", eventId)
+        intent.putExtra("finanseName", finanseName)
+        intent.putExtra("userId", userId)
+        intent.putExtra("finanseId", finanseId)
+        startActivity(intent)
     }
 
 
