@@ -10,11 +10,20 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
+import java.util.ArrayList
 
 class FinanseSummaryAdapter() : ListAdapter<Bilans, FinanseSummaryAdapter.FinanseSummaryViewHolder>(FinanseSummaryDiffCallback()) {
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FinanseSummaryViewHolder {
         val itemView= LayoutInflater.from(parent.context).inflate(R.layout.item_finanse_summary, parent, false)
@@ -36,7 +45,7 @@ class FinanseSummaryAdapter() : ListAdapter<Bilans, FinanseSummaryAdapter.Finans
                 .whereEqualTo("userId", bilans.userId)
                 .get()
                 .addOnSuccessListener { userEmails ->
-                    for(userEmail in userEmails){
+                    for(userEmail in userEmails){  //jeden dokument
                         friendName.text= userEmail.getString("userEmail")
                     }
 
