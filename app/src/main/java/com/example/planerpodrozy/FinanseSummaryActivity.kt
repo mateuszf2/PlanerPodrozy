@@ -2,6 +2,7 @@ package com.example.planerpodrozy
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -70,6 +71,7 @@ class FinanseSummaryActivity :AppCompatActivity() {
 
             chart.setFitBars(true)
             chart.description.isEnabled = false
+            chart.legend.isEnabled=false
             chart.animateY(2000)
 
             val xAxis = chart.xAxis
@@ -93,11 +95,11 @@ class FinanseSummaryActivity :AppCompatActivity() {
         fun getColorForIndex(index: Int): Int {
             // Define a color palette, adjust as needed
             val colors = listOf(
-                android.graphics.Color.RED,
-                android.graphics.Color.GREEN,
-                android.graphics.Color.BLUE,
-                android.graphics.Color.YELLOW,
-                android.graphics.Color.MAGENTA
+                android.graphics.Color.rgb(153,243,246),
+                android.graphics.Color.rgb(144,255,163),
+                android.graphics.Color.rgb(229,255,99),
+                android.graphics.Color.rgb(250,171,33),
+                android.graphics.Color.rgb(202,91,236)
             )
             // Return color for the given index
             return colors[index % colors.size]
@@ -126,6 +128,15 @@ class FinanseSummaryActivity :AppCompatActivity() {
             }
         }
 
+        fun eliminateCommaOnMobilePhone(){
+            for (bilans in friendsList){
+                if (bilans.totalBilans.contains(',')) {
+                    val commaIndex = bilans.totalBilans.indexOf(',')
+                    bilans.totalBilans=bilans.totalBilans.replace(',','.')
+                }
+            }
+            makeChart()
+        }
         fun fetchFriends() {
             if(eventId!=null){
                 db.collection("bilans").document(eventId).collection("bilansPairs")
@@ -143,10 +154,9 @@ class FinanseSummaryActivity :AppCompatActivity() {
                                     friendsList.add(friend)
                                 }
                             }
-
                         }
+                        eliminateCommaOnMobilePhone()
                         finanseSummaryAdapter.submitList(friendsList)
-                        makeChart()
                     }
             }
         }
@@ -176,3 +186,5 @@ class FinanseSummaryActivity :AppCompatActivity() {
     }
 
 }
+
+
