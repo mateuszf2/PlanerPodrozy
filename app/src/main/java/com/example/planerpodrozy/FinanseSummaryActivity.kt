@@ -22,6 +22,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import java.text.DecimalFormat
 import java.util.ArrayList
+import java.util.Locale
 
 class FinanseSummaryActivity :AppCompatActivity() {
     private lateinit var binding: ActivityFinanseSummaryBinding

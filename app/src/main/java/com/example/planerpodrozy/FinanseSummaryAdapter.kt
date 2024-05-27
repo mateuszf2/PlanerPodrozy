@@ -57,6 +57,7 @@ class FinanseSummaryAdapter() : ListAdapter<Bilans, FinanseSummaryAdapter.Finans
                             money.text=sub1+sub2+" zł"
 
                             //magicznym trafem na telefonie pobiera z bazy z przecinkiem anizeli z kropka;))
+                            //LOCALE.US .   LOCALE.UK .    LOCALE.GERMANY ,
                             Log.d("TOTAL",bilans.totalBilans)
 
                         }
