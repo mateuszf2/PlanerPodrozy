@@ -104,6 +104,11 @@
             android:name=".DeleteFinanseActivity"
             android:exported="false"
             />
+        <activity
+            android:name=".AcceptPaymentActivity"
+            android:exported="false"
+            />
+
 
     </application>
 

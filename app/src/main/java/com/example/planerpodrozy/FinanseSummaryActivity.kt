@@ -184,6 +184,11 @@ class FinanseSummaryActivity :AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.buttonAcceptPayments.setOnClickListener{
+            val intent= Intent(this, AcceptPaymentActivity::class.java)
+            intent.putExtra("eventId", eventId)
+            startActivity(intent)
+        }
     }
 
 }

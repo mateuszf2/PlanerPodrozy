@@ -44,6 +44,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/buttonAcceptPayments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accept payments"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <Button
         android:id="@+id/buttonMakePayment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

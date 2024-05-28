@@ -48,7 +48,7 @@ class PayFinanseActivity : AppCompatActivity() {
                             .addOnSuccessListener { emailDocument->
                                 for(ed in emailDocument){
                                     val paymentEmail= ed.getString("userEmail")!!
-                                    val payment= Payment(paymentEmail, amountPayment)
+                                    val payment= Payment(paymentEmail, amountPayment, "tenplikdowywalenia", "boStary")
                                     paymentList.add(payment)
                                     paymentAdapter.submitList(paymentList)
                                 }

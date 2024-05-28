@@ -30,7 +30,8 @@ class PayFriendActivity : AppCompatActivity() {
                     val paymentData= hashMapOf( //to będzie zapisywać w bazie jako oczekujące do akceptacji płatności
                         "eventId" to eventId,
                         "friendEmail" to emailToPay,
-                        "amountToPay" to amountToPay
+                        "amountToPay" to amountToPay,
+                        "userId" to userId
                     )
                     db.collection("paymentsToAccept")
                         .add(paymentData)
