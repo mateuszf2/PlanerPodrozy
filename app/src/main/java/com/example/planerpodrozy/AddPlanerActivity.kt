@@ -108,8 +108,8 @@ class AddPlanerActivity : AppCompatActivity() {
         }
     }
     private fun resetFields() {
-        binding.dataplaner.text = "Wybierz datę"
-        binding.godzinawydarzenia.text = "Wybierz godzinę"
+        binding.dataplaner.text = "Date"
+        binding.godzinawydarzenia.text = "Time"
         binding.nazwaplaner.setText("")
     }
     private fun showToast(message: String) {

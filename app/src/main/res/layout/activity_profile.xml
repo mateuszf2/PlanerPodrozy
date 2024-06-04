@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#5CFFEB3B"
     tools:context=".ProfileActivity">
 
     <Button
         android:id="@+id/buttonBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#FF5722"
         android:text="Go back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,26 +21,25 @@
         android:id="@+id/profile_image"
         android:layout_width="185dp"
         android:layout_height="197dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="92dp"
         android:cropToPadding="false"
         android:scaleType="centerCrop"
         android:src="@drawable/user"
-        android:layout_centerHorizontal="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/buttonBack"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-        />
+        app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
 
 
     <ImageView
         android:id="@+id/profile_add"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="250dp"
         android:cropToPadding="false"
         android:src="@drawable/add"
-       android:layout_marginTop="250dp"
-        android:layout_marginLeft="70dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -67,8 +68,8 @@
         android:id="@+id/btFriendsList"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:cropToPadding="false"
         android:layout_margin="15dp"
+        android:cropToPadding="false"
         android:src="@drawable/friends"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
