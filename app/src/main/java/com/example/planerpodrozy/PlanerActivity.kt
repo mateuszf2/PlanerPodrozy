@@ -1,6 +1,6 @@
 package com.example.planerpodrozy
 
-import DayAdapter
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log

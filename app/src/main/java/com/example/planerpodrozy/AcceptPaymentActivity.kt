@@ -28,7 +28,7 @@ class AcceptPaymentActivity: AppCompatActivity(), PaymentAdapter.OnEventClickLis
         val db= Firebase.firestore
         val currentUser= FirebaseAuth.getInstance().currentUser
         val userId= currentUser?.uid
-        val userEmail= currentUser?.uid
+        val userEmail= currentUser?.email
 
         paymentRecyclerView=binding. recyclerViewPayments
         paymentAdapter= PaymentAdapter()
@@ -37,14 +37,18 @@ class AcceptPaymentActivity: AppCompatActivity(), PaymentAdapter.OnEventClickLis
 
         paymentAdapter.setOnEventClickListener(this)
 
-        if(userId!=null){
+        if(userId!=null && userEmail!=null){
             db.collection("paymentsToAccept")
-                .whereEqualTo("friendEmail", userEmail)
                 .whereEqualTo("eventId", eventId)
+                .whereEqualTo("friendEmail", userEmail)
                 .get()
                 .addOnSuccessListener { acceptDocs->
+                    Log.i("LOG", "${userEmail}, ${eventId}")
                     val paymentsList= mutableListOf<Payment>()
                     for(acceptDoc in acceptDocs){
+                        if(!acceptDocs.isEmpty){
+                            Log.i("TAG","KURWA TU COŚ JEST")
+                        }
                         Log.i("TAG", "ASDAAS")
                         val paymentUserId= acceptDoc.getString("userId")
                         val paymentAmount= acceptDoc.getString("amountToPay")!!.toDouble()
@@ -82,20 +86,35 @@ class AcceptPaymentActivity: AppCompatActivity(), PaymentAdapter.OnEventClickLis
             .get()
             .addOnSuccessListener { bilansDocs->
                 for(bilansDoc in bilansDocs){
-                    var totalBilans= bilansDoc.getString("totalBilans")!!.toDouble()
+                    var totalBilans= bilansDoc.getDouble("totalBilans")!!
                     totalBilans-=amountToPay
+
                     db.collection("bilans").document(eventId).collection("bilansPairs").document(bilansDoc.id).update("totalBilans", totalBilans)
 
-                    db.collection("paymentsToAccept")
-                        .whereEqualTo("eventId", eventId)
-                        .whereEqualTo("friendEmail", payment.friendEmail)
-                        .whereEqualTo("userId", payment.userId)
+                    db.collection("bilans").document(eventId).collection("bilansPairs")
+                        .whereEqualTo("userId", userIdDoc)
+                        .whereEqualTo("friendId", userId)
                         .get()
-                        .addOnSuccessListener { deleteDocs->
-                            for(deleteDoc in deleteDocs){
-                                db.collection("paymentsToAccept").document(deleteDoc.id).delete()
+                        .addOnSuccessListener { bilansDocs2->
+                            for(bilansDoc2 in bilansDocs2){
+                                var totalBilans= bilansDoc2.getDouble("totalBilans")!!
+                                totalBilans+=amountToPay
+
+                                db.collection("bilans").document(eventId).collection("bilansPairs").document(bilansDoc2.id).update("totalBilans", totalBilans)
+
+                                db.collection("paymentsToAccept")
+                                    .whereEqualTo("eventId", eventId)
+                                    .whereEqualTo("friendEmail", payment.friendEmail)
+                                    .whereEqualTo("userId", payment.userId)
+                                    .get()
+                                    .addOnSuccessListener { deleteDocs->
+                                        for(deleteDoc in deleteDocs){
+                                            db.collection("paymentsToAccept").document(deleteDoc.id).delete()
+                                        }
+                                    }
                             }
                         }
+
                 }
             }
             .addOnFailureListener { e->
