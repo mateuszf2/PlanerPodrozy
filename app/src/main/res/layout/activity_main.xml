@@ -57,5 +57,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Dodanie dużej etykiety "Twoje wyjazdy" -->
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="236dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:text="Your trips"
+        android:textColor="@android:color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/buttonInvitations"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
