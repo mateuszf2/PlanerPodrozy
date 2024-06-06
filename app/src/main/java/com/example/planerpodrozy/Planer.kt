@@ -10,5 +10,5 @@ data class Planer(
 
 data class PlanerDay(
     val data: String,
-    val activities: List<Planer>
+    val planerActivities: List<Planer>
 )

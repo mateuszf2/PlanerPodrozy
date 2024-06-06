@@ -46,13 +46,13 @@ class FinanseActivity : AppCompatActivity(),FinanseAdapter.OnEventClickListener 
                     for(document in documents){
                         val finanseId= document.id
                         val finanseName= document.getString("finanseName")
-                        val amountFinanse= document.getDouble("amountFinanse")
+                        val amountFinanse= document.getDouble("amountFinanse")!!
                         val userIdFinanse= document.getString("userId")
-                        val finanse= Finanse(amountFinanse!!.toDouble(), eventId, finanseId, finanseName.toString(), userIdFinanse.toString())
+                        val finanse= Finanse(amountFinanse, eventId, finanseId, finanseName.toString(), userIdFinanse.toString())
 
                         finanseList.add(finanse)
-                        sumAll+= amountFinanse.toDouble() //sumuje wszystkie składki dla tego wydarzenia
-                        binding.textViewSumAll.text= "Suma składek\n${sumAll.toString()} zł" //wyświetla sumę wszystkich składek tego wydarzenia
+                        sumAll+= amountFinanse //sumuje wszystkie składki dla tego wydarzenia
+                        binding.textViewSumAll.text= "Suma składek\n${sumAll} zł" //wyświetla sumę wszystkich składek tego wydarzenia
                     }
                     finanseAdapter.submitList(finanseList)
                 }
