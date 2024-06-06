@@ -46,12 +46,12 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {    //Jeżeli na urządzeniu użytkownik jest już zalogowany, od razu przekierowuje go na stronę główną
-        super.onStart()
-
-        if(firebaseAuth.currentUser != null){
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-    }
+//    override fun onStart() {    //Jeżeli na urządzeniu użytkownik jest już zalogowany, od razu przekierowuje go na stronę główną
+//        super.onStart()
+//
+//        if(firebaseAuth.currentUser != null){
+//            val intent = Intent(this, MainActivity::class.java)
+//            startActivity(intent)
+//        }
+//    }
 }
