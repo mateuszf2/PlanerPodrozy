@@ -7,46 +7,92 @@
     android:background="#5CFFEB3B"
     tools:context=".CreateEventActivity">
 
-    <EditText
-        android:id="@+id/eventNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_130sdp"
-        android:ems="10"
-        android:hint="Event Name"
-        android:inputType="text"
-        android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/locationText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+    <!-- CardView to hold the EditTexts and header -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintHeight_percent="0.6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/locationText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_50sdp"
-        android:ems="10"
-        android:hint="Location"
-        android:inputType="text"
-        android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/editTextDate"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <EditText
-        android:id="@+id/editTextDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_120sdp"
-        android:ems="10"
-        android:hint="Date"
-        android:inputType="date"
-        app:layout_constraintBottom_toTopOf="@+id/buttonAccept"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <!-- LinearLayout inside the CardView to hold the header and EditTexts -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create Event"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Spacer to add equal spacing -->
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <EditText
+                android:id="@+id/eventNameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Event Name"
+                android:inputType="text"
+                android:text="" />
+
+            <!-- Spacer to add equal spacing -->
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <EditText
+                android:id="@+id/locationText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Location"
+                android:inputType="text"
+                android:text="" />
+
+            <!-- Spacer to add equal spacing -->
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/editTextDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Select Date"
+                android:inputType="none"
+                android:padding="16dp"
+                android:background="@android:drawable/editbox_background" />
+
+            <!-- Spacer to add equal spacing -->
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/buttonAccept"
@@ -67,6 +113,5 @@
         android:text="Go back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

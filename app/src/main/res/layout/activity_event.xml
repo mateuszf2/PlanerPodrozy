@@ -7,7 +7,6 @@
     android:background="#5CFFEB3B"
     tools:context=".EventActivity">
 
-
     <Button
         android:id="@+id/buttonBack"
         android:layout_width="wrap_content"
@@ -26,7 +25,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonBack" />
-
 
     <EditText
         android:id="@+id/textView_eventName"
@@ -49,7 +47,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_eventName" />
 
-    <EditText
+    <TextView
         android:id="@+id/textView_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -89,7 +87,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_date" />
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_MenuBar"
         android:layout_width="match_parent"
@@ -97,7 +94,6 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonMenuBar" />
-
 
     <Button
         android:id="@+id/buttonMenuBar"
@@ -110,4 +106,3 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

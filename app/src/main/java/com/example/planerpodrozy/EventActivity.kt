@@ -1,5 +1,6 @@
 package com.example.planerpodrozy
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
@@ -17,10 +18,10 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.io.IOException
+import java.util.*
 
 class EventActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityEventBinding
@@ -39,8 +40,8 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         //MAPA GOOGLE
-        val mapFragment= supportFragmentManager.findFragmentById(R.id.id_map) as SupportMapFragment
-        mapFragment.getMapAsync(this) // Tutaj this odnosi się do klasy MainActivity, która implementuje OnMapReadyCallback
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.id_map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
         binding.buttonBack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
@@ -108,6 +109,10 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
                         eventNameTextView.text = eventName
                         locationTextView.text = location
                         dateTextView.text = date
+
+                        dateTextView.setOnClickListener {
+                            showDatePickerDialog(dateTextView)
+                        }
                     } else {
                         Log.e("EventActivity", "Document for eventId: $eventId does not exist")
                     }
@@ -117,27 +122,27 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
         }
 
-        binding.btGroupChat.setOnClickListener{
+        binding.btGroupChat.setOnClickListener {
             val intent = Intent(this, GroupMessagingActivity::class.java)
-            intent.putExtra("eventId",eventId)
-            intent.putExtra("eventName",eventName)
+            intent.putExtra("eventId", eventId)
+            intent.putExtra("eventName", eventName)
             startActivity(intent)
         }
 
         binding.buttonUpdate.setOnClickListener {
-            if(eventId!=null){
+            if (eventId != null) {
                 eventsCollectionRef.document(eventId)
                     .get()
                     .addOnSuccessListener { eventDocument ->
-                        val eventNameTextView: TextView= findViewById(R.id.textView_eventName)
-                        val locationTextView: TextView= findViewById(R.id.textView_location)
-                        val dateTextView: TextView= findViewById(R.id.textView_date)
+                        val eventNameTextView: TextView = findViewById(R.id.textView_eventName)
+                        val locationTextView: TextView = findViewById(R.id.textView_location)
+                        val dateTextView: TextView = findViewById(R.id.textView_date)
 
-                        val newEventName= eventNameTextView.text.toString()
-                        val newLocation= locationTextView.text.toString()
-                        val newDate= dateTextView.text.toString()
+                        val newEventName = eventNameTextView.text.toString()
+                        val newLocation = locationTextView.text.toString()
+                        val newDate = dateTextView.text.toString()
 
-                        val newEventData= hashMapOf<String, Any>(
+                        val newEventData = hashMapOf<String, Any>(
                             "nazwa_wydarzenia" to newEventName,
                             "lokalizacja" to newLocation,
                             "data" to newDate
@@ -146,23 +151,34 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         geocodeLocation(newLocation)
                     }
-                    .addOnFailureListener { e->
-
+                    .addOnFailureListener { e ->
+                        Log.e("EventActivity", "Error updating event data", e)
                     }
             }
         }
-
-
     }
-    //MAPA GOOGLE- do konfiguracji
+
+    private fun showDatePickerDialog(dateTextView: TextView) {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+            val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+            dateTextView.text = selectedDate
+        }, year, month, day)
+
+        datePickerDialog.show()
+    }
+
+    // MAPA GOOGLE- do konfiguracji
     override fun onMapReady(googleMap: GoogleMap) {
         myMap = googleMap
         // Tutaj można dodać konfiguracje mapy
-
-
     }
 
-    //Geokoduje i dodaje na mapę znacznik
+    // Geokoduje i dodaje na mapę znacznik
     private fun geocodeLocation(locationName: String) {
         val geocoder = Geocoder(this)
         try {
