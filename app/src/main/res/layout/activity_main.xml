@@ -37,16 +37,17 @@
 
     <ImageButton
         android:id="@+id/ib_view_profile"
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
         android:scaleType="fitCenter"
         android:src="@drawable/user"
+        android:background="#5CFFEB3B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.783"
         app:layout_constraintStart_toEndOf="@+id/buttonCreateEvent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView_events"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <Button
         android:id="@+id/buttonInvitations"

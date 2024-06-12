@@ -7,6 +7,8 @@
     <color name="edit_text_background">#FFFFFFFF</color>
     <color name="app_chats">#36D8B8</color>
     <color name="ecru_white">#F3EFE0 </color>
+    <color name="finanse_red">#FF0000 </color>
+    <color name="finanse_green">#38FA2A </color>
 
     <color name="chart1">#7BEBDF </color>
 </resources>

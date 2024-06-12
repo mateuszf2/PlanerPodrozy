@@ -1,6 +1,7 @@
 package com.example.planerpodrozy
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -23,6 +24,7 @@ import com.google.firebase.firestore.firestore
 import java.text.DecimalFormat
 import java.util.ArrayList
 import java.util.Locale
+
 
 class FinanseSummaryActivity :AppCompatActivity() {
     private lateinit var binding: ActivityFinanseSummaryBinding
@@ -55,6 +57,9 @@ class FinanseSummaryActivity :AppCompatActivity() {
         finanseSummaryRecyclerView.adapter= finanseSummaryAdapter
         finanseSummaryRecyclerView.layoutManager= LinearLayoutManager(this)
 
+
+
+
         var friendsList =  mutableListOf<Bilans>()
         var index = 0
         val friends = ArrayList<BarEntry>()
@@ -73,7 +78,7 @@ class FinanseSummaryActivity :AppCompatActivity() {
             chart.setFitBars(true)
             chart.description.isEnabled = false
             chart.legend.isEnabled=false
-            chart.animateY(2000)
+            chart.animateY(2500)
 
             val xAxis = chart.xAxis
             xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -93,17 +98,17 @@ class FinanseSummaryActivity :AppCompatActivity() {
             yAxisRight.valueFormatter = MyValueFormatter()
             chart.invalidate() // Refresh the chart
         }
-        fun getColorForIndex(index: Int): Int {
+        fun getColorForIndex(index: Int, bilans : Float): Int {
             // Define a color palette, adjust as needed
             val colors = listOf(
-                android.graphics.Color.rgb(153,243,246),
-                android.graphics.Color.rgb(144,255,163),
-                android.graphics.Color.rgb(229,255,99),
-                android.graphics.Color.rgb(250,171,33),
-                android.graphics.Color.rgb(202,91,236)
+                android.graphics.Color.rgb(255,0,0),
+                android.graphics.Color.rgb(56,250,42),
             )
             // Return color for the given index
-            return colors[index % colors.size]
+            if (bilans<0){
+                return colors[MyEnum.RED.number]
+            }
+            else return colors[MyEnum.GREEN.number]
         }
 
         fun makeChart(){
@@ -119,7 +124,7 @@ class FinanseSummaryActivity :AppCompatActivity() {
                                 monkeyIndex = 10
                             }
                             labels.add(userEmail.getString("userEmail")?.substring(0, monkeyIndex!!).toString())
-                            colors.add(getColorForIndex(index))
+                            colors.add(getColorForIndex(index,bilans.totalBilans.toFloat()))
                             index++
                             if (index == friendsList.size) {
                                 populateChart(friends, labels,colors)
@@ -193,4 +198,7 @@ class FinanseSummaryActivity :AppCompatActivity() {
 
 }
 
-
+enum class MyEnum(val number: Int, val description: String) {
+    RED(0, "Red"),
+    GREEN(1, "Green")
+}
