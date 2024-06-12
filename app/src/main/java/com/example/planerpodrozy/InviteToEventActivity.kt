@@ -45,6 +45,7 @@ class InviteToEventActivity : AppCompatActivity() {
                         .addOnSuccessListener { documentReference->
                             Log.i("TAG", "UDALO SIĘ")
                             showToast("Wysłano zaproszenie do wyjazdu")
+                            resetFields()
                         }
                         .addOnFailureListener{ e->
                             Log.i("TAG", "NIE UDALO SIĘ")
@@ -59,6 +60,10 @@ class InviteToEventActivity : AppCompatActivity() {
         val pattern = Pattern.compile(emailPattern)
         val matcher = pattern.matcher(email)
         return matcher.matches()
+    }
+    private fun resetFields() {
+        binding.editTextEmail.setText("")
+
     }
 
     private fun showToast(message: String) {

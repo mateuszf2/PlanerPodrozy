@@ -3,6 +3,7 @@ package com.example.planerpodrozy
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -77,6 +78,7 @@ class PayFinanseActivity : AppCompatActivity() {
                     db.collection("finansePay")
                         .add(payData)
                         .addOnSuccessListener { document->
+                            showToast("Payment accepted successfully!")
 
                         }
                         .addOnFailureListener { e->
@@ -91,5 +93,11 @@ class PayFinanseActivity : AppCompatActivity() {
             intent.putExtra("eventId", eventId)
             startActivity(intent)
         }
+    }
+
+
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
