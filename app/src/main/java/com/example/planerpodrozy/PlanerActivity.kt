@@ -2,6 +2,7 @@ package com.example.planerpodrozy
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -78,23 +79,42 @@ class PlanerActivity : AppCompatActivity() {
         }
 
         val menuRecyclerView = binding.recyclerViewMenuBar
-        val options = arrayOf("Podstawowe informacje", "Członkowie", "Wspólne finanse", "Dzienny planer", "Zamknij")
+        val options = arrayOf("Basic information", "Members", "Shared finances", "Daily planner", "Go back" ,"Close")
         val menuAdapter = MenuBarAdapter(options) { selectedOption ->
-            if (selectedOption == "Zamknij") {
-                menuRecyclerView.visibility = View.GONE
-                binding.buttonMenuBar.visibility = View.VISIBLE
-            } else if (selectedOption == "Podstawowe informacje") {
-                val intent = Intent(this, EventActivity::class.java)
-                intent.putExtra("eventId", eventId)
-                startActivity(intent)
-            } else if (selectedOption == "Członkowie") {
-                val intent = Intent(this, MembersActivity::class.java)
-                intent.putExtra("eventId", eventId)
-                startActivity(intent)
-            } else if (selectedOption == "Wspólne finanse") {
-                val intent = Intent(this, FinanseActivity::class.java)
-                intent.putExtra("eventId", eventId)
-                startActivity(intent)
+            when (selectedOption) {
+                "Close" -> {
+                    menuRecyclerView.visibility = View.GONE
+                    binding.buttonMenuBar.visibility = View.VISIBLE
+                }
+                "Members" -> {
+                    val intent = Intent(this, MembersActivity::class.java)
+                    intent.putExtra("eventId", eventId)
+                    startActivity(intent)
+                }
+                "Shared finances" -> {
+                    val intent = Intent(this, FinanseActivity::class.java)
+                    intent.putExtra("eventId", eventId)
+                    startActivity(intent)
+                }
+                "Basic information" -> {
+                    if (eventId != null) {
+                        val intent = Intent(this, EventActivity::class.java)
+                        intent.putExtra("eventId", eventId)
+                        startActivity(intent)
+                    } else {
+                        Log.e("EventActivity", "eventId is null, cannot start PlanerActivity")
+                    }
+                }
+                "Go back" ->{
+                    if(eventId !=null){
+                        val intent= Intent(this, MainActivity::class.java)
+                        intent.putExtra("eventId", eventId)
+                        startActivity(intent)
+                    }
+                    else{
+                        Log.e("EventActivity", "eventId is null, cannot start MainActivity")
+                    }
+                }
             }
         }
         menuRecyclerView.adapter = menuAdapter
@@ -105,10 +125,7 @@ class PlanerActivity : AppCompatActivity() {
             binding.buttonMenuBar.visibility = View.GONE
         }
 
-        binding.buttonBack.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
+
 
         binding.buttonAddPlaner.setOnClickListener {
             val intent = Intent(this, AddPlanerActivity::class.java)

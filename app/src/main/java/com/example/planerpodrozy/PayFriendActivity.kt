@@ -47,7 +47,7 @@ class PayFriendActivity : AppCompatActivity() {
         }
 
         binding.buttonBack.setOnClickListener {
-            val intent= Intent(this, FinanseActivity::class.java)
+            val intent= Intent(this, FinanseSummaryActivity::class.java)
             intent.putExtra("eventId", eventId)
             startActivity(intent)
         }

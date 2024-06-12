@@ -38,15 +38,6 @@
        app:layout_constraintTop_toTopOf="parent" />
 
    <Button
-       android:id="@+id/buttonBack"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:backgroundTint="#FF5722"
-       android:text="Go back"
-       app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintTop_toTopOf="parent" />
-
-   <Button
        android:id="@+id/buttonAddPlaner"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
@@ -60,11 +51,9 @@
        android:id="@+id/buttonDelete"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:layout_marginRight="@dimen/_4sdp"
        android:backgroundTint="#DD1111"
        android:text="Delete"
        app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintEnd_toStartOf="@+id/buttonBack"
        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

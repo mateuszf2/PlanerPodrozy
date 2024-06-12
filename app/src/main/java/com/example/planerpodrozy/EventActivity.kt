@@ -43,10 +43,6 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.id_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        binding.buttonBack.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
 
         binding.buttonAddFriend.setOnClickListener {
             val intent = Intent(this, InviteToEventActivity::class.java)
@@ -55,7 +51,7 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         val recyclerView: RecyclerView = findViewById(R.id.recycler_view_MenuBar)
-        val options = arrayOf("Basic information", "Members", "Joint finances", "Daily planner", "Close")
+        val options = arrayOf("Basic information", "Members", "Shared finances", "Daily planner", "Go back" ,"Close")
         val adapter = MenuBarAdapter(options) { selectedOption ->
             when (selectedOption) {
                 "Close" -> {
@@ -67,7 +63,7 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
                     intent.putExtra("eventId", eventId)
                     startActivity(intent)
                 }
-                "Joint finances" -> {
+                "Shared finances" -> {
                     val intent = Intent(this, FinanseActivity::class.java)
                     intent.putExtra("eventId", eventId)
                     startActivity(intent)
@@ -79,6 +75,16 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
                         startActivity(intent)
                     } else {
                         Log.e("EventActivity", "eventId is null, cannot start PlanerActivity")
+                    }
+                }
+                "Go back" ->{
+                    if(eventId !=null){
+                        val intent= Intent(this, MainActivity::class.java)
+                        intent.putExtra("eventId", eventId)
+                        startActivity(intent)
+                    }
+                    else{
+                        Log.e("EventActivity", "eventId is null, cannot start MainActivity")
                     }
                 }
             }
@@ -100,8 +106,8 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
                         location = document.getString("lokalizacja")!!
                         val date = document.getString("data")
 
-                        val eventNameTextView: TextView = findViewById(R.id.textView_eventName)
-                        val locationTextView: TextView = findViewById(R.id.textView_location)
+                        val eventNameTextView: TextView = findViewById(R.id.editText_eventName)
+                        val locationTextView: TextView = findViewById(R.id.editText_location)
                         val dateTextView: TextView = findViewById(R.id.textView_date)
 
                         geocodeLocation(location)
@@ -134,8 +140,8 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
                 eventsCollectionRef.document(eventId)
                     .get()
                     .addOnSuccessListener { eventDocument ->
-                        val eventNameTextView: TextView = findViewById(R.id.textView_eventName)
-                        val locationTextView: TextView = findViewById(R.id.textView_location)
+                        val eventNameTextView: TextView = findViewById(R.id.editText_eventName)
+                        val locationTextView: TextView = findViewById(R.id.editText_location)
                         val dateTextView: TextView = findViewById(R.id.textView_date)
 
                         val newEventName = eventNameTextView.text.toString()

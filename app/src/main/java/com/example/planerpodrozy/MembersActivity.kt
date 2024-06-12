@@ -2,6 +2,7 @@ package com.example.planerpodrozy
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -75,26 +76,42 @@ class MembersActivity : AppCompatActivity() {
         }
 
         val recyclerView: RecyclerView= findViewById(R.id.recycler_view_MenuBar)
-        val options= arrayOf("Basic information", "Members", "Joint finances", "Daily planner", "Close")
+        val options= arrayOf("Basic information", "Members", "Shared finances", "Daily planner", "Go back" ,"Close")
         val menuAdapter= MenuBarAdapter(options) { selectedOption ->
-            if(selectedOption == "Close") {
-                recyclerView.visibility = View.GONE
-                binding.buttonMenuBar.visibility= View.VISIBLE
-            }
-            else if(selectedOption == "Basic information") {
-                val intent= Intent(this, EventActivity::class.java)
-                intent.putExtra("eventId", eventId)
-                startActivity(intent)
-            }
-            else if(selectedOption == "Joint finances"){
-                val intent= Intent(this, FinanseActivity::class.java)
-                intent.putExtra("eventId", eventId)
-                startActivity(intent)
-            }
-            else if(selectedOption == "Daily planner"){
-                val intent= Intent(this, PlanerActivity::class.java)
-                intent.putExtra("eventId", eventId)
-                startActivity(intent)
+            when (selectedOption) {
+                "Close" -> {
+                    recyclerView.visibility = View.GONE
+                    binding.buttonMenuBar.visibility = View.VISIBLE
+                }
+                "Basic information" -> {
+                    val intent = Intent(this, EventActivity::class.java)
+                    intent.putExtra("eventId", eventId)
+                    startActivity(intent)
+                }
+                "Shared finances" -> {
+                    val intent = Intent(this, FinanseActivity::class.java)
+                    intent.putExtra("eventId", eventId)
+                    startActivity(intent)
+                }
+                "Daily planner" -> {
+                    if (eventId != null) {
+                        val intent = Intent(this, PlanerActivity::class.java)
+                        intent.putExtra("eventId", eventId)
+                        startActivity(intent)
+                    } else {
+                        Log.e("EventActivity", "eventId is null, cannot start PlanerActivity")
+                    }
+                }
+                "Go back" ->{
+                    if(eventId !=null){
+                        val intent= Intent(this, MainActivity::class.java)
+                        intent.putExtra("eventId", eventId)
+                        startActivity(intent)
+                    }
+                    else{
+                        Log.e("EventActivity", "eventId is null, cannot start MainActivity")
+                    }
+                }
             }
         }
         recyclerView.adapter= menuAdapter
@@ -104,9 +121,6 @@ class MembersActivity : AppCompatActivity() {
             recyclerView.visibility= View.VISIBLE
             binding.buttonMenuBar.visibility= View.GONE
         }
-        binding.buttonBack.setOnClickListener{
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
+
     }
 }
