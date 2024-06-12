@@ -54,24 +54,24 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         val recyclerView: RecyclerView = findViewById(R.id.recycler_view_MenuBar)
-        val options = arrayOf("Podstawowe informacje", "Członkowie", "Wspólne finanse", "Planer Dnia", "Zamknij")
+        val options = arrayOf("Basic information", "Members", "Joint finances", "Daily planner", "Close")
         val adapter = MenuBarAdapter(options) { selectedOption ->
             when (selectedOption) {
-                "Zamknij" -> {
+                "Close" -> {
                     recyclerView.visibility = View.GONE
                     binding.buttonMenuBar.visibility = View.VISIBLE
                 }
-                "Członkowie" -> {
+                "Members" -> {
                     val intent = Intent(this, MembersActivity::class.java)
                     intent.putExtra("eventId", eventId)
                     startActivity(intent)
                 }
-                "Wspólne finanse" -> {
+                "Joint finances" -> {
                     val intent = Intent(this, FinanseActivity::class.java)
                     intent.putExtra("eventId", eventId)
                     startActivity(intent)
                 }
-                "Planer Dnia" -> {
+                "Daily planner" -> {
                     if (eventId != null) {
                         val intent = Intent(this, PlanerActivity::class.java)
                         intent.putExtra("eventId", eventId)

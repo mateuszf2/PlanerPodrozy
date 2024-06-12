@@ -15,8 +15,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_profile_photo"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:cropToPadding="false"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
@@ -26,9 +26,9 @@
             android:id="@+id/textView_friendName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/_12sdp"
             android:text="email"
-            android:paddingTop="10dp"
+            android:paddingTop="@dimen/_8sdp"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             android:textStyle="bold" />

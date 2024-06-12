@@ -1,9 +1,7 @@
 package com.example.planerpodrozy
 
-import DayAdapter
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +18,7 @@ class PlanerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlanerBinding
     private lateinit var dayAdapter: DayAdapter
     private val selectedActivities = mutableSetOf<Planer>()
+    private val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +26,6 @@ class PlanerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         eventId = intent.getStringExtra("eventId")!!
-        val db = Firebase.firestore
         val currentUser = FirebaseAuth.getInstance().currentUser
         val userId = currentUser?.uid
 
@@ -51,58 +49,56 @@ class PlanerActivity : AppCompatActivity() {
                         val planer = Planer(
                             dateFormat.format(date),
                             timeFormat.format(time),
-                            planerName,
-                            eventId
+                            planerName
                         )
 
                         planerList.add(planer)
                     }
 
-
                     val groupedByDay = planerList.groupBy { it.data }
                         .map { PlanerDay(it.key, it.value.sortedBy { activity -> activity.godzina }) }
                         .sortedBy { day -> dateFormat.parse(day.data) }
 
-                    dayAdapter = DayAdapter(groupedByDay) { planer, isChecked ->
+                    dayAdapter = DayAdapter(groupedByDay, { planer, isChecked ->
                         if (isChecked) {
                             selectedActivities.add(planer)
                         } else {
                             selectedActivities.remove(planer)
                         }
-                    }
+                    }, { planer -> // Dodano ten blok
+                        deleteActivity(planer)
+                    })
 
                     binding.recyclerViewPlaner.adapter = dayAdapter
                     binding.recyclerViewPlaner.layoutManager = LinearLayoutManager(this)
                 }
                 .addOnFailureListener { e ->
+                    // Obsłuż błąd
                 }
         }
 
-        val menuRecyclerView= binding.recyclerViewMenuBar
-        val options= arrayOf("Podstawowe informacje", "Członkowie", "Wspólne finanse", "Planer Dnia", "Zamknij")
-        val menuAdapter= MenuBarAdapter(options) {selectedOption->
-            if(selectedOption == "Zamknij"){
-                menuRecyclerView.visibility= View.GONE
-                binding.buttonMenuBar.visibility= View.VISIBLE
-            }
-            else if(selectedOption == "Podstawowe informacje"){
-                val intent= Intent(this, EventActivity::class.java)
+        val menuRecyclerView = binding.recyclerViewMenuBar
+        val options = arrayOf("Podstawowe informacje", "Członkowie", "Wspólne finanse", "Dzienny planer", "Zamknij")
+        val menuAdapter = MenuBarAdapter(options) { selectedOption ->
+            if (selectedOption == "Zamknij") {
+                menuRecyclerView.visibility = View.GONE
+                binding.buttonMenuBar.visibility = View.VISIBLE
+            } else if (selectedOption == "Podstawowe informacje") {
+                val intent = Intent(this, EventActivity::class.java)
                 intent.putExtra("eventId", eventId)
                 startActivity(intent)
-            }
-            else if(selectedOption == "Członkowie"){
-                val intent= Intent(this, MembersActivity::class.java)
+            } else if (selectedOption == "Członkowie") {
+                val intent = Intent(this, MembersActivity::class.java)
                 intent.putExtra("eventId", eventId)
                 startActivity(intent)
-            }
-            else if(selectedOption == "Wspólne finanse"){
-                val intent= Intent(this, FinanseActivity::class.java)
+            } else if (selectedOption == "Wspólne finanse") {
+                val intent = Intent(this, FinanseActivity::class.java)
                 intent.putExtra("eventId", eventId)
                 startActivity(intent)
             }
         }
-        menuRecyclerView.adapter= menuAdapter
-        menuRecyclerView.layoutManager= LinearLayoutManager(this)
+        menuRecyclerView.adapter = menuAdapter
+        menuRecyclerView.layoutManager = LinearLayoutManager(this)
 
         binding.buttonMenuBar.setOnClickListener {
             binding.recyclerViewMenuBar.visibility = View.VISIBLE
@@ -119,46 +115,33 @@ class PlanerActivity : AppCompatActivity() {
             intent.putExtra("eventId", eventId)
             startActivity(intent)
         }
-
-        binding.buttonDelete.setOnClickListener {
-            deleteSelectedActivities()
-        }
     }
+
+    private fun deleteActivity(planer: Planer) {
+        db.collection("planer")
+            .whereEqualTo("PlanerNazwa", planer.nazwaAktywnosci)
+            .whereEqualTo("PlanerData", planer.data)
+            .whereEqualTo("PlanerGodzina", planer.godzina)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    db.collection("planer").document(document.id).delete()
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Wydarzenie usunięte pomyślnie", Toast.LENGTH_SHORT).show()
+                            // Odśwież listę aktywności po usunięciu
+                            recreate()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Nie udało się usunąć wydarzenia", Toast.LENGTH_SHORT).show()
+                        }
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Nie udało się usunąć wydarzenia", Toast.LENGTH_SHORT).show()
+            }
+    }
+
     companion object {
         private const val TAG = "PlanerActivity"
     }
-    private fun deleteSelectedActivities() {
-        if (selectedActivities.isEmpty()) {
-            Toast.makeText(this, "Nie wybrano żadnych wydarzeń do usunięcia.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val db = Firebase.firestore
-        val batch = db.batch()
-
-        selectedActivities.forEach { planer ->
-            val query = db.collection("planer")
-                .whereEqualTo("eventId", planer.eventId)
-                .whereEqualTo("PlanerNazwa", planer.nazwaAktywnosci)
-                .whereEqualTo("PlanerData", planer.data)
-                .whereEqualTo("PlanerGodzina", planer.godzina)
-
-            query.get().addOnSuccessListener { documents ->
-                for (document in documents) {
-                    Log.d(TAG, "Dokument do usunięcia: ${document.id}")
-                    batch.delete(document.reference)
-                }
-            }.addOnFailureListener { exception ->
-                Toast.makeText(this, "Wystąpił błąd podczas pobierania dokumentów do usunięcia: ${exception.message}", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        batch.commit().addOnSuccessListener {
-            Toast.makeText(this, "Wybrane wydarzenia zostały usunięte.", Toast.LENGTH_SHORT).show()
-            recreate()
-        }.addOnFailureListener { exception ->
-            Toast.makeText(this, "Wystąpił błąd podczas usuwania wydarzeń: ${exception.message}", Toast.LENGTH_SHORT).show()
-        }
-    }
-
 }

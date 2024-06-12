@@ -59,8 +59,8 @@
             android:id="@+id/buttonEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:backgroundTint="#86E91E63"
+            android:layout_marginStart="@dimen/_40sdp"
+            android:backgroundTint="#D82572F8"
             android:text="Edit"
             android:textSize="10sp" />
 
@@ -68,8 +68,8 @@
             android:id="@+id/buttonDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:backgroundTint="#86E91E63"
+            android:layout_marginLeft="@dimen/_65sdp"
+            android:backgroundTint="#EF1111"
             android:text="Delete"
             android:textSize="10sp" />
 

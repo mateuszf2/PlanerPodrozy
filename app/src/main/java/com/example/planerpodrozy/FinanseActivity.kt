@@ -81,23 +81,23 @@ class FinanseActivity : AppCompatActivity(),FinanseAdapter.OnEventClickListener 
 
 
         val menuRecyclerView= binding.recyclerViewMenuBar
-        val options= arrayOf("Podstawowe informacje", "Członkowie", "Wspólne finanse", "Planer Dnia", "Zamknij")
+        val options= arrayOf("Basic information", "Members", "Joint finances", "Daily planner", "Close")
         val menuAdapter= MenuBarAdapter(options) {selectedOption->
-            if(selectedOption == "Zamknij"){
+            if(selectedOption == "Close"){
                 menuRecyclerView.visibility= View.GONE
                 binding.buttonMenuBar.visibility= View.VISIBLE
             }
-            else if(selectedOption == "Podstawowe informacje"){
+            else if(selectedOption == "Basic information"){
                 val intent= Intent(this, EventActivity::class.java)
                 intent.putExtra("eventId", eventId)
                 startActivity(intent)
             }
-            else if(selectedOption == "Członkowie"){
+            else if(selectedOption == "Members"){
                 val intent= Intent(this, MembersActivity::class.java)
                 intent.putExtra("eventId", eventId)
                 startActivity(intent)
             }
-            else if(selectedOption == "Planer Dnia"){
+            else if(selectedOption == "Daily planner"){
                 val intent= Intent(this, PlanerActivity::class.java)
                 intent.putExtra("eventId", eventId)
                 startActivity(intent)
@@ -112,7 +112,7 @@ class FinanseActivity : AppCompatActivity(),FinanseAdapter.OnEventClickListener 
         }
 
         binding.buttonBack.setOnClickListener{
-            val intent = Intent(this, EventActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("eventId", eventId)
             startActivity(intent)
         }

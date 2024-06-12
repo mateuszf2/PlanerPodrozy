@@ -75,23 +75,23 @@ class MembersActivity : AppCompatActivity() {
         }
 
         val recyclerView: RecyclerView= findViewById(R.id.recycler_view_MenuBar)
-        val options= arrayOf("Podstawowe informacje", "Członkowie", "Wspólne finanse", "Planer Dnia", "Zamknij")
+        val options= arrayOf("Basic information", "Members", "Joint finances", "Daily planner", "Close")
         val menuAdapter= MenuBarAdapter(options) { selectedOption ->
-            if(selectedOption == "Zamknij") {
+            if(selectedOption == "Close") {
                 recyclerView.visibility = View.GONE
                 binding.buttonMenuBar.visibility= View.VISIBLE
             }
-            else if(selectedOption == "Podstawowe informacje") {
+            else if(selectedOption == "Basic information") {
                 val intent= Intent(this, EventActivity::class.java)
                 intent.putExtra("eventId", eventId)
                 startActivity(intent)
             }
-            else if(selectedOption == "Wspólne finanse"){
+            else if(selectedOption == "Joint finances"){
                 val intent= Intent(this, FinanseActivity::class.java)
                 intent.putExtra("eventId", eventId)
                 startActivity(intent)
             }
-            else if(selectedOption == "Planer Dnia"){
+            else if(selectedOption == "Daily planner"){
                 val intent= Intent(this, PlanerActivity::class.java)
                 intent.putExtra("eventId", eventId)
                 startActivity(intent)

@@ -1,6 +1,8 @@
 package com.example.planerpodrozy
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -55,6 +57,10 @@ class FinanseSummaryAdapter() : ListAdapter<Bilans, FinanseSummaryAdapter.Finans
                             var sub1 = bilans.totalBilans.substring(0,bilans.totalBilans.indexOf(',',0)+1)
                             var sub2 = bilans.totalBilans.substring(bilans.totalBilans.indexOf(',',0)+1).take(2)
                             money.text=sub1+sub2+" zł"
+                            if (sub1.toFloat()<0){
+                                money.setBackgroundResource(R.drawable.finanse_summary_bg_red)
+                            }
+                            else  money.setBackgroundResource(R.drawable.finanse_summary_bg_green)
 
                             //magicznym trafem na telefonie pobiera z bazy z przecinkiem anizeli z kropka;))
                             //LOCALE.US .   LOCALE.UK .    LOCALE.GERMANY ,
@@ -63,6 +69,10 @@ class FinanseSummaryAdapter() : ListAdapter<Bilans, FinanseSummaryAdapter.Finans
                         }
                         else{
                             money.text=bilans.totalBilans
+                            if (bilans.totalBilans.toFloat()<0){
+                                money.setBackgroundResource(R.drawable.finanse_summary_bg_red)
+                            }
+                            else  money.setBackgroundResource(R.drawable.finanse_summary_bg_green)
                         }
                     }
                     else{
@@ -71,6 +81,10 @@ class FinanseSummaryAdapter() : ListAdapter<Bilans, FinanseSummaryAdapter.Finans
                             var sub1 = bilans.totalBilans.substring(0,bilans.totalBilans.indexOf('.',0)+1)
                             var sub2 = bilans.totalBilans.substring(bilans.totalBilans.indexOf('.',0)+1).take(2)
                             money.text=sub1+sub2+" zł"
+                            if (sub1.toFloat()<0){
+                                money.setBackgroundResource(R.drawable.finanse_summary_bg_red)
+                            }
+                            else  money.setBackgroundResource(R.drawable.finanse_summary_bg_green)
 
                             //magicznym trafem na telefonie pobiera z bazy z przecinkiem anizeli z kropka;))
                             Log.d("TOTAL",bilans.totalBilans)
@@ -78,6 +92,10 @@ class FinanseSummaryAdapter() : ListAdapter<Bilans, FinanseSummaryAdapter.Finans
                         }
                         else{
                             money.text=bilans.totalBilans
+                            if (bilans.totalBilans.toFloat()<0){
+                                money.setBackgroundResource(R.drawable.finanse_summary_bg_red)
+                            }
+                            else money.setBackgroundResource(R.drawable.finanse_summary_bg_green)
                         }
                     }
 

@@ -5,18 +5,32 @@
     android:orientation="horizontal"
     android:padding="@dimen/_14sdp">
 
-    <TextView
-        android:id="@+id/textView_friendName"
-        android:layout_width="@dimen/_150sdp"
+
+
+
+
+
+    <HorizontalScrollView
+        android:layout_width="@dimen/_170sdp"
         android:layout_height="wrap_content"
+        android:scrollbars="horizontal"
         android:background="@drawable/finanse_summary_bg"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/_12ssp"
-        android:textStyle="bold"
-        android:text="name"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:layout_marginRight="@dimen/_20sdp"/>
+        android:layout_marginRight="@dimen/_10sdp"
+        >
+        <TextView
+            android:id="@+id/textView_friendName"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            android:text="name"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            />
+    </HorizontalScrollView>
 
     <TextView
         android:id="@+id/textView_money"
