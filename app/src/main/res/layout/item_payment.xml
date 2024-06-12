@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/textView_paymentText"
-        android:layout_width="256dp"
+        android:layout_width="@dimen/_190sdp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_weight="1"
@@ -21,15 +21,15 @@
 
     <Button
         android:id="@+id/buttonAccept"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/_47sdp"
+        android:layout_height="@dimen/_47sdp"
         android:backgroundTint="#4CAF50"
         android:text="+" />
 
     <Button
         android:id="@+id/buttonCancel"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/_47sdp"
+        android:layout_height="@dimen/_47sdp"
         android:backgroundTint="#FF0000"
         android:text="-" />
 

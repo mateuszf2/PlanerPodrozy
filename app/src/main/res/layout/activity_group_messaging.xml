@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/iv_group_profile_photo"
-            android:layout_width="51dp"
-            android:layout_height="45dp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_38sdp"
             android:cropToPadding="false"
             android:src="@drawable/group_chat" />
 
@@ -24,9 +24,9 @@
             android:id="@+id/textView_groupName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/_11sdp"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="@dimen/_14ssp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -36,8 +36,8 @@
         android:id="@+id/messageRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginBottom="60dp" />
+        android:layout_marginTop="@dimen/_60sdp"
+        android:layout_marginBottom="@dimen/_45sdp" />
 
     <LinearLayout
         android:layout_width="match_parent"

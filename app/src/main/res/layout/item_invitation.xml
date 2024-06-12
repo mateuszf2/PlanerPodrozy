@@ -16,17 +16,17 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/buttonAccept"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:id="@+id/buttonAcceptFriend"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_45sdp"
         android:backgroundTint="#4CAF50"
+        android:layout_marginRight="4dp"
         android:text="+" />
 
     <Button
-        android:id="@+id/buttonCancel"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:id="@+id/buttonCancelFriend"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_45sdp"
         android:backgroundTint="#FF0000"
         android:text="-" />
-
 </LinearLayout>

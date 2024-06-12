@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class DayAdapter(
     private val dayList: List<PlanerDay>,
-    private val onCheckedChangeListener: (Planer, Boolean) -> Unit
+    private val onCheckedChangeListener: (Planer, Boolean) -> Unit,
+    private val onDeleteClickListener: (Planer) -> Unit // Dodano ten parametr
 ) : RecyclerView.Adapter<DayAdapter.DayViewHolder>() {
 
     inner class DayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,7 +27,7 @@ class DayAdapter(
         val currentDay = dayList[position]
         holder.textViewDay.text = currentDay.data
 
-        val planerAdapter = PlanerAdapter(currentDay.activities, onCheckedChangeListener)
+        val planerAdapter = PlanerAdapter(currentDay.activities, onCheckedChangeListener, onDeleteClickListener) // Przekazano funkcję usuwania
         holder.activitiesRecyclerView.adapter = planerAdapter
         holder.activitiesRecyclerView.layoutManager = LinearLayoutManager(holder.itemView.context)
     }
