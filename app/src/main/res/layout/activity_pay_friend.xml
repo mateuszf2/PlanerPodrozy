@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Amount of money"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 

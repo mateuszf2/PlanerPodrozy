@@ -30,8 +30,6 @@ class FinanseActivity : AppCompatActivity(),FinanseAdapter.OnEventClickListener 
         val currentUser= FirebaseAuth.getInstance().currentUser
         val userId= currentUser?.uid
 
-        var sumAll: Double = 0.0
-        var sumUser: Double = 0.0
 
         finanseRecyclerView= binding.recyclerViewFinanse
         finanseAdapter= FinanseAdapter(this)
@@ -52,8 +50,7 @@ class FinanseActivity : AppCompatActivity(),FinanseAdapter.OnEventClickListener 
                         val finanse= Finanse(amountFinanse, eventId, finanseId, finanseName.toString(), userIdFinanse.toString())
 
                         finanseList.add(finanse)
-                        sumAll+= amountFinanse //sumuje wszystkie składki dla tego wydarzenia
-                        binding.textViewSumAll.text= "Suma składek\n${sumAll} zł" //wyświetla sumę wszystkich składek tego wydarzenia
+
                     }
                     finanseAdapter.submitList(finanseList)
                 }
@@ -62,23 +59,7 @@ class FinanseActivity : AppCompatActivity(),FinanseAdapter.OnEventClickListener 
                 }
         }
 
-        //sumuje wszystkie wpłaty użytkownika
-        if(userId!=null){
-            db.collection("finansePay")
-                .whereEqualTo("eventId", eventId)
-                .whereEqualTo("userId", userId)
-                .get()
-                .addOnSuccessListener { documents ->
-                    for(document in documents){
-                        val currentAmount= document.getString("amountPay")!!.toDouble()
-                        sumUser+=currentAmount
-                        binding.textViewSumUser.text= "Suma wpłat\n${sumUser.toString()}" //wyświetlanie na sumy wszystki wpłat użytkownika
-                    }
-                }
-                .addOnFailureListener { e->
 
-                }
-        }
 
 
         val menuRecyclerView= binding.recyclerViewMenuBar

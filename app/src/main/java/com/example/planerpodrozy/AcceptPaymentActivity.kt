@@ -25,11 +25,20 @@ class AcceptPaymentActivity: AppCompatActivity(), PaymentAdapter.OnEventClickLis
         setContentView(binding.root)
 
         eventId= intent.getStringExtra("eventId")!!
+        generatePaymentList()
+
+        binding.buttonBack.setOnClickListener{
+            val intent= Intent(this, FinanseSummaryActivity::class.java)
+            intent.putExtra("eventId", eventId)
+            startActivity(intent)
+
+        }
+    }
+    fun generatePaymentList(){
         val db= Firebase.firestore
         val currentUser= FirebaseAuth.getInstance().currentUser
         val userId= currentUser?.uid
         val userEmail= currentUser?.email
-
         paymentRecyclerView=binding. recyclerViewPayments
         paymentAdapter= PaymentAdapter()
         paymentRecyclerView.adapter= paymentAdapter
@@ -61,13 +70,6 @@ class AcceptPaymentActivity: AppCompatActivity(), PaymentAdapter.OnEventClickLis
                 .addOnFailureListener{  e->
 
                 }
-        }
-
-        binding.buttonBack.setOnClickListener{
-            val intent= Intent(this, FinanseSummaryActivity::class.java)
-            intent.putExtra("eventId", eventId)
-            startActivity(intent)
-
         }
     }
 
@@ -110,6 +112,7 @@ class AcceptPaymentActivity: AppCompatActivity(), PaymentAdapter.OnEventClickLis
                                     .addOnSuccessListener { deleteDocs->
                                         for(deleteDoc in deleteDocs){
                                             db.collection("paymentsToAccept").document(deleteDoc.id).delete()
+                                            generatePaymentList()
                                         }
                                     }
                             }
@@ -120,7 +123,6 @@ class AcceptPaymentActivity: AppCompatActivity(), PaymentAdapter.OnEventClickLis
             .addOnFailureListener { e->
 
             }
-
 
         Toast.makeText(this, "Potwierdzono płatność", Toast.LENGTH_SHORT)
 
@@ -142,6 +144,7 @@ class AcceptPaymentActivity: AppCompatActivity(), PaymentAdapter.OnEventClickLis
                     db.collection("paymentsToAccept").document(deleteDoc.id).delete()
                 }
             }
+        generatePaymentList()
         Toast.makeText(this, "Odrzucono płatność", Toast.LENGTH_SHORT)
     }
 }

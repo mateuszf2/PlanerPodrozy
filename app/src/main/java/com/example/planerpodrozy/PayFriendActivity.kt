@@ -38,6 +38,9 @@ class PayFriendActivity : AppCompatActivity() {
                         .add(paymentData)
                         .addOnSuccessListener { document->
                             showToast("Friend added successfully!")
+                            binding.editTextEmailToPay.setText("")
+                            binding.editTextNumberToPay.setText("")
+
                         }
                         .addOnFailureListener { e->
 

@@ -22,9 +22,9 @@
         android:id="@+id/buttonDeleteEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_180sdp"
         android:backgroundTint="#E91E1E"
         android:paddingHorizontal="3dp"
+        android:layout_gravity="center_horizontal"
         android:paddingVertical="3dp"
         android:text="Delete"
         android:textSize="@dimen/_12ssp" />
