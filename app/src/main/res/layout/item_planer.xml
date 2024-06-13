@@ -12,6 +12,7 @@
         android:id="@+id/buttonDeletePlaner"
         android:layout_width="@dimen/_24sdp"
         android:layout_height="@dimen/_27sdp"
+        android:layout_gravity="center"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="4dp"
         android:backgroundTint="#FF9800"
@@ -19,6 +20,7 @@
         android:paddingVertical="1dp"
         android:text="X"
         android:textAllCaps="false"
+        android:textColor="#FBFBFB"
         android:textSize="16sp" />
 
     <TextView
