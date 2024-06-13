@@ -41,7 +41,7 @@
         android:layout_height="@dimen/_40sdp"
         android:scaleType="fitCenter"
         android:src="@drawable/user"
-        android:background="#5CFFEB3B"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.783"

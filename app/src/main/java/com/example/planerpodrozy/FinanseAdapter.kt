@@ -52,7 +52,7 @@ class FinanseAdapter(private val listener: OnEventClickListener): ListAdapter<Fi
                 }
             if (finanse.amountFinanse.toString().contains('.')){
                 val help =finanse.amountFinanse.toString().substring(0,finanse.amountFinanse.toString().indexOf('.'))
-                amountFinanse.text= "Całkowita kwota składki: ${help} zł"
+                amountFinanse.text= "Total amount of contribution: ${help} zł"
             }
 
 
@@ -75,10 +75,10 @@ class FinanseAdapter(private val listener: OnEventClickListener): ListAdapter<Fi
                                 var sub1 = amountPerUser.substring(0,amountPerUser.indexOf('.',0)+1)
                                 var sub2 = amountPerUser.substring(amountPerUser.indexOf('.',0)+1).take(2)
                                 var help = sub1+sub2+" zł"
-                                amountDisplay.text= "Kwota na osobe: ${help}"
+                                amountDisplay.text= "Amount per user: ${help}"
                             }
                             else{
-                                amountDisplay.text= "Kwota na osobe: ${amountPerUser} zł"
+                                amountDisplay.text= "Amount per user: ${amountPerUser} zł"
                             }
                         }
                         .addOnFailureListener { e->
@@ -92,7 +92,7 @@ class FinanseAdapter(private val listener: OnEventClickListener): ListAdapter<Fi
 
             buttonEdit.setOnClickListener {
                 if (userId!=finanse.userId){
-                    Toast.makeText(itemView.context, "Nie jesteś stwórcą składki!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(itemView.context, "You are not the creator of the contribution!", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     listener.onFinanseEdit(finanse.amountFinanse.toString(),finanse.eventId,
@@ -103,7 +103,7 @@ class FinanseAdapter(private val listener: OnEventClickListener): ListAdapter<Fi
 
             buttonDelete.setOnClickListener {
                 if (userId!=finanse.userId){
-                    Toast.makeText(itemView.context, "Nie jesteś stwórcą składki!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(itemView.context, "You are not the creator of the contribution!", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     listener.onFinanseDelete(finanse.amountFinanse.toString(),finanse.eventId,

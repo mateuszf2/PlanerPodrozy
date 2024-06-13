@@ -198,12 +198,12 @@ class EventActivity : AppCompatActivity(), OnMapReadyCallback {
                 myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
             } else {
                 // Adres nie został znaleziony
-                Toast.makeText(applicationContext, "Adres nie został znaleziony!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Address not found!", Toast.LENGTH_SHORT).show()
             }
         } catch (e: IOException) {
             e.printStackTrace()
             // Błąd podczas geokodowania
-            Toast.makeText(applicationContext, "Błąd podczas geokodowania!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Error while geocoding!", Toast.LENGTH_SHORT).show()
         }
     }
 }
