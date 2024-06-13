@@ -15,16 +15,18 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
+        android:textSize="@dimen/_22ssp"
         android:textStyle="bold" />
 
     <Button
         android:id="@+id/buttonDeleteEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_190sdp"
+        android:layout_marginLeft="@dimen/_180sdp"
         android:backgroundTint="#E91E1E"
+        android:paddingHorizontal="3dp"
+        android:paddingVertical="3dp"
         android:text="Delete"
-        android:textSize="@dimen/_12ssp"   />
+        android:textSize="@dimen/_12ssp" />
 
 </LinearLayout>

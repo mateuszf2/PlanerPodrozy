@@ -14,12 +14,12 @@
         android:layout_height="@dimen/_27sdp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="4dp"
-        android:backgroundTint="#F40505"
+        android:backgroundTint="#FF9800"
         android:paddingHorizontal="1dp"
         android:paddingVertical="1dp"
         android:text="X"
         android:textAllCaps="false"
-        android:textSize="8sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/textView_Godzina"
@@ -27,6 +27,7 @@
         android:layout_height="@dimen/_35sdp"
         android:gravity="center"
         android:layout_gravity="center"
+
         android:layout_marginBottom="0dp"
         android:textColor="@android:color/black"
         android:textSize="@dimen/_16ssp"

@@ -137,8 +137,7 @@ class PlanerActivity : AppCompatActivity() {
     private fun deleteActivity(planer: Planer) {
         db.collection("planer")
             .whereEqualTo("PlanerNazwa", planer.nazwaAktywnosci)
-            .whereEqualTo("PlanerData", planer.data)
-            .whereEqualTo("PlanerGodzina", planer.godzina)
+            .whereEqualTo("eventId", eventId)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
